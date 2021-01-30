@@ -1,5 +1,8 @@
 import cors from 'cors';
 import express from 'express';
+import { ApolloServer } from 'apollo-server-express';
+import { buildSchema } from 'graphql';
+import { PlantResolver } from './resolvers/plant';
 
 const main = async () => {
   // Express app
@@ -12,6 +15,19 @@ const main = async () => {
       credentials: true,
     })
   );
+
+  const apolloServer = new ApolloServer({
+    schema: await buildSchema({
+      resolvers: [PlantResolver],
+      validate: false,
+    }),
+    context: ({ req, res }) => ({ req, res }),
+  });
+
+  apolloServer.applyMiddleware({
+    app,
+    cors: false,
+  });
 
   // Server listening
   app.listen(4000, () => {
