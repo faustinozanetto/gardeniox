@@ -1,32 +1,23 @@
 import { Field, ObjectType } from 'type-graphql';
 import {
   BaseEntity,
-  Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Plot } from './Plot';
+import { Plant } from './Plant';
 
 @ObjectType()
 @Entity()
-export class Plant extends BaseEntity {
+export class Plot extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Field()
-  @Column()
-  name!: string;
-
-  @Field()
-  @Column()
-  variety!: string;
-
-  @ManyToOne(() => Plot, (plot) => plot.plants)
-  plot: Plot;
+  @OneToMany(() => Plant, (plant) => plant.plot)
+  plants: Plant[];
 
   @Field(() => String)
   @CreateDateColumn()
