@@ -1,10 +1,23 @@
 import cors from 'cors';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
-import { buildSchema } from 'graphql';
+import { createConnection } from 'typeorm';
+import { buildSchema } from 'type-graphql';
 import { PlantResolver } from './resolvers/plant';
+import { TestResolver } from './resolvers/test';
+import { Plant } from './entities/Plant';
 
 const main = async () => {
+  // Database connection
+  await createConnection({
+    type: 'postgres',
+    database: 'gardeniox',
+    username: 'faust',
+    password: '4532164mine',
+    logging: true,
+    synchronize: true,
+    entities: [Plant],
+  });
   // Express app
   const app = express();
 
@@ -18,7 +31,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [PlantResolver],
+      resolvers: [TestResolver, PlantResolver],
       validate: false,
     }),
     context: ({ req, res }) => ({ req, res }),
@@ -30,8 +43,8 @@ const main = async () => {
   });
 
   // Server listening
-  app.listen(4000, () => {
-    console.log('Server started on http://localhost:4000');
+  app.listen(5000, () => {
+    console.log('Server started on http://localhost:5000');
   });
 };
 
