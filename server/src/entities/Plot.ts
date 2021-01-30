@@ -1,6 +1,7 @@
 import { Field, ObjectType } from 'type-graphql';
 import {
   BaseEntity,
+  Column,
   CreateDateColumn,
   Entity,
   OneToMany,
@@ -15,6 +16,14 @@ export class Plot extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id!: number;
+
+  @Field()
+  @Column({ nullable: true })
+  size!: number;
+
+  @Field()
+  @Column({ nullable: true })
+  maxPlants!: number;
 
   @OneToMany(() => Plant, (plant) => plant.plot)
   plants: Plant[];

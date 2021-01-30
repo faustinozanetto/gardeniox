@@ -4,8 +4,9 @@ import { ApolloServer } from 'apollo-server-express';
 import { createConnection } from 'typeorm';
 import { buildSchema } from 'type-graphql';
 import { PlantResolver } from './resolvers/plant';
-import { TestResolver } from './resolvers/test';
+import { PlotResolver } from './resolvers/plot';
 import { Plant } from './entities/Plant';
+import { Plot } from './entities/Plot';
 
 const main = async () => {
   // Database connection
@@ -16,7 +17,7 @@ const main = async () => {
     password: '4532164mine',
     logging: true,
     synchronize: true,
-    entities: [Plant],
+    entities: [Plant, Plot],
   });
   // Express app
   const app = express();
@@ -31,7 +32,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [TestResolver, PlantResolver],
+      resolvers: [PlantResolver, PlotResolver],
       validate: false,
     }),
     context: ({ req, res }) => ({ req, res }),
