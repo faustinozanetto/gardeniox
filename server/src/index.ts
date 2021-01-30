@@ -9,16 +9,24 @@ import { Plant } from './entities/Plant';
 import { Plot } from './entities/Plot';
 
 const main = async () => {
-  // Database connection
-  await createConnection({
-    type: 'postgres',
-    database: 'gardeniox',
-    username: 'faust',
-    password: '4532164mine',
-    logging: true,
-    synchronize: true,
-    entities: [Plant, Plot],
-  });
+  try {
+    // Database connection
+    await createConnection({
+      type: 'postgres',
+      database: 'gardeniox',
+      username: 'faust',
+      password: '4532164mine',
+      logging: true,
+      synchronize: true,
+      entities: [Plant, Plot],
+    });
+  } catch (error) {
+    console.error(
+      'An error occurred while trying to initialize connection to database!'
+    );
+    process.exit();
+  }
+  
   // Express app
   const app = express();
 
