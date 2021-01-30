@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import cors from 'cors';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
@@ -9,9 +10,10 @@ import { Plant } from './entities/Plant';
 import { Plot } from './entities/Plot';
 
 const main = async () => {
+  let connection = null;
   try {
     // Database connection
-    await createConnection({
+    connection = await createConnection({
       type: 'postgres',
       database: 'gardeniox',
       username: 'faust',
@@ -26,7 +28,11 @@ const main = async () => {
     );
     process.exit();
   }
-  
+  console.log(
+    'Successfully connected to database:',
+    connection.options.database
+  );
+
   // Express app
   const app = express();
 
@@ -53,7 +59,7 @@ const main = async () => {
 
   // Server listening
   app.listen(5000, () => {
-    console.log('Server started on http://localhost:5000');
+    console.log('🚀 Server started on http://localhost:5000');
   });
 };
 

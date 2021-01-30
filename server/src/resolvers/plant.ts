@@ -5,8 +5,15 @@ import { Plant } from '../entities/Plant';
 class PlantInput {
   @Field()
   name: string;
+
   @Field()
   variety: string;
+
+  @Field()
+  seedSprouted: String;
+
+  @Field()
+  plantedOn: String;
 }
 
 @Resolver()

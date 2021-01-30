@@ -14,8 +14,8 @@ import { Plant } from './Plant';
 @Entity()
 export class Plot extends BaseEntity {
   @Field()
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
 
   @Field()
   @Column({ nullable: true })
