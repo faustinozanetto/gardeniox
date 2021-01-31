@@ -4,19 +4,19 @@ import { Plant, PlantType } from '../entities/Plant';
 @InputType()
 class PlantInput {
   @Field()
-  name!: string;
+  name: string;
 
   @Field()
-  variety!: string;
+  variety: string;
 
-  @Field()
-  type!: string;
-
-  @Field({ description: 'Format: YEAR/MONTH/DAY' })
-  seedSprouted!: string;
+  @Field(() => PlantType)
+  type!: PlantType;
 
   @Field({ description: 'Format: YEAR/MONTH/DAY' })
-  plantedOn!: string;
+  seedSprouted: string;
+
+  @Field({ description: 'Format: YEAR/MONTH/DAY' })
+  plantedOn: string;
 }
 
 @Resolver()
@@ -37,8 +37,6 @@ export class PlantResolver {
       ...input,
       seedSprouted: new Date(input.seedSprouted),
       plantedOn: new Date(input.plantedOn),
-      //@ts-ignore
-      type: PlantType[input.type],
     }).save();
   }
 

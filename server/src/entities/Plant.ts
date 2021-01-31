@@ -1,4 +1,4 @@
-import { Field, ObjectType } from 'type-graphql';
+import { Field, ObjectType, registerEnumType } from 'type-graphql';
 import {
   BaseEntity,
   Column,
@@ -8,7 +8,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-// import { GardenioxDate } from './GardenioxDate';
 import { Plot } from './Plot';
 
 export enum PlantType {
@@ -18,6 +17,16 @@ export enum PlantType {
   CARROT = 'carrot',
   POTATO = 'potato',
 }
+
+registerEnumType(PlantType, {
+  name: 'PlantType',
+  description: 'Plant type',
+  valuesConfig: {
+    CARROT: {
+      description: 'Carrot',
+    },
+  },
+});
 
 @ObjectType()
 @Entity()
@@ -34,13 +43,9 @@ export class Plant extends BaseEntity {
   @Column({ nullable: true })
   variety!: string;
 
-  @Field()
-  @Column({
-    type: 'enum',
-    enum: PlantType,
-    default: PlantType.DEFAULT,
-  })
-  type!: PlantType;
+  @Field(() => PlantType)
+  @Column()
+  type: PlantType;
 
   @ManyToOne(() => Plot, (plot) => plot.plants)
   plot: Plot;
