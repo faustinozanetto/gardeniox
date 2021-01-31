@@ -4,9 +4,10 @@ import { Plot } from '../entities/Plot';
 @InputType()
 class PlotInput {
   @Field()
-  maxPlants: number;
-  @Field()
   size: number;
+
+  @Field()
+  maxPlants: number;
 }
 
 @Resolver()
@@ -17,7 +18,7 @@ export class PlotResolver {
   }
 
   @Query(() => Plot, { nullable: true })
-  plot(@Arg('id') id: number): Promise<Plot | undefined> {
+  plot(@Arg('id') id: string): Promise<Plot | undefined> {
     return Plot.findOne(id);
   }
 
@@ -29,8 +30,23 @@ export class PlotResolver {
   }
 
   @Mutation(() => Boolean)
-  async deletePlot(@Arg('id') id: number): Promise<Boolean> {
+  async deletePlot(@Arg('id') id: string): Promise<Boolean> {
     await Plot.delete(id);
     return true;
+  }
+
+  @Mutation(() => Number)
+  async plantsAmount(@Arg('id') id: string): Promise<number | undefined> {
+    const plot = await Plot.findOne(id);
+    if (!plot) {
+      console.error('Plot not found');
+      return;
+    }
+    const amount = plot?.plants.length;
+    if (amount === 0) {
+      console.log('No plants registered in this plot');
+      return 0;
+    }
+    return amount;
   }
 }

@@ -44,10 +44,11 @@ export class Plant extends BaseEntity {
   variety!: string;
 
   @Field(() => PlantType)
-  @Column()
+  @Column({ nullable: true })
   type: PlantType;
 
-  @ManyToOne(() => Plot, (plot) => plot.plants)
+  @Field()
+  @ManyToOne(() => Plot, (plot) => plot.plants, { nullable: true })
   plot: Plot;
 
   @Field(() => String)

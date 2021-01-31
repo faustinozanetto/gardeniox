@@ -1,5 +1,6 @@
 import { Resolver, Query, Arg, Mutation, InputType, Field } from 'type-graphql';
 import { Plant, PlantType } from '../entities/Plant';
+import { Plot } from '../entities/Plot';
 
 @InputType()
 class PlantInput {
@@ -11,6 +12,9 @@ class PlantInput {
 
   @Field(() => PlantType)
   type!: PlantType;
+
+  @Field()
+  plot!: string;
 
   @Field({ description: 'Format: YEAR/MONTH/DAY' })
   seedSprouted: string;
@@ -27,7 +31,7 @@ export class PlantResolver {
   }
 
   @Query(() => Plant, { nullable: true })
-  plant(@Arg('id') id: number): Promise<Plant | undefined> {
+  plant(@Arg('id') id: string): Promise<Plant | undefined> {
     return Plant.findOne(id);
   }
 
@@ -35,13 +39,14 @@ export class PlantResolver {
   async createPlant(@Arg('input') input: PlantInput): Promise<Plant> {
     return Plant.create({
       ...input,
+      plot: await Plot.findOne(input.plot),
       seedSprouted: new Date(input.seedSprouted),
       plantedOn: new Date(input.plantedOn),
     }).save();
   }
 
   @Mutation(() => Boolean)
-  async deletePlant(@Arg('id') id: number): Promise<Boolean> {
+  async deletePlant(@Arg('id') id: string): Promise<Boolean> {
     await Plant.delete(id);
     return true;
   }
