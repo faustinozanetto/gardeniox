@@ -24,7 +24,8 @@ const main = async () => {
     });
   } catch (error) {
     console.error(
-      'An error occurred while trying to initialize connection to database!'
+      'An error occurred while trying to initialize connection to database!',
+      error
     );
     process.exit();
   }

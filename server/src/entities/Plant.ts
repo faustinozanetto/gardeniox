@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+// import { GardenioxDate } from './GardenioxDate';
 import { Plot } from './Plot';
 
 export enum PlantType {
@@ -38,19 +39,18 @@ export class Plant extends BaseEntity {
     type: 'enum',
     enum: PlantType,
     default: PlantType.DEFAULT,
-    nullable: true,
   })
-  type: PlantType;
+  type!: PlantType;
 
   @ManyToOne(() => Plot, (plot) => plot.plants)
   plot: Plot;
 
   @Field(() => String)
-  @Column({ nullable: true })
+  @Column()
   seedSprouted!: Date;
 
   @Field(() => String)
-  @Column({ nullable: true })
+  @Column()
   plantedOn!: Date;
 
   @Field(() => String)
