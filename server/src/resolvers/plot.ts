@@ -1,5 +1,6 @@
 import { Arg, Field, InputType, Mutation, Query, Resolver } from 'type-graphql';
-import { Plot } from '../entities/Plot';
+import { Plant } from '../entities/plant.entity';
+import { Plot } from '../entities/plot.entity';
 
 @InputType()
 class PlotInput {
@@ -14,17 +15,17 @@ class PlotInput {
 export class PlotResolver {
   @Query(() => [Plot])
   async plots(): Promise<Plot[]> {
-    return Plot.find();
+    return await Plot.find();
   }
 
   @Query(() => Plot, { nullable: true })
-  plot(@Arg('id') id: string): Promise<Plot | undefined> {
-    return Plot.findOne(id);
+  async plot(@Arg('id') id: string): Promise<Plot | undefined> {
+    return await Plot.findOne(id);
   }
 
   @Mutation(() => Plot)
   async createPlot(@Arg('input') input: PlotInput): Promise<Plot> {
-    return Plot.create({
+    return await Plot.create({
       ...input,
     }).save();
   }
@@ -48,5 +49,17 @@ export class PlotResolver {
       return 0;
     }
     return amount;
+  }
+
+  @Query(() => Plant)
+  async getPlotPlants(@Arg('id') id: string): Promise<Plant | undefined> {
+    const plot = await Plot.findOne(id);
+    let plantIds;
+    if (plot) {
+      plantIds = plot?.plants;
+      console.log('Undefined plants');
+    }
+    //@ts-ignore
+    return await Plant.findOne(plantIds[0]);
   }
 }

@@ -1,6 +1,7 @@
 import { Resolver, Query, Arg, Mutation, InputType, Field } from 'type-graphql';
-import { Plant, PlantType } from '../entities/Plant';
-import { Plot } from '../entities/Plot';
+import { getConnection, getRepository } from 'typeorm';
+import { Plant, PlantType } from '../entities/plant.entity';
+import { Plot } from '../entities/plot.entity';
 
 @InputType()
 class PlantInput {
@@ -37,12 +38,28 @@ export class PlantResolver {
 
   @Mutation(() => Plant)
   async createPlant(@Arg('input') input: PlantInput): Promise<Plant> {
-    return Plant.create({
+    const plot = await Plot.findOne(input.plot);
+    const plant = await Plant.create({
       ...input,
-      plot: await Plot.findOne(input.plot),
+      plot: plot,
       seedSprouted: new Date(input.seedSprouted),
       plantedOn: new Date(input.plantedOn),
     }).save();
+
+    if (!plot) {
+      console.log('Plot not found');
+    }
+    if (plot) {
+      await getConnection()
+        .createQueryBuilder()
+        .relation(Plot, 'plants')
+        .of(plot.id)
+        .add(plant.id);
+    }
+    //@ts-ignore
+    // await Plot.update({ plotId }, { plants: [...plant.plants, plant] });
+
+    return plant;
   }
 
   @Mutation(() => Boolean)

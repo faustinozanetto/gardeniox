@@ -4,11 +4,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Plot } from './Plot';
+import { PlotEntity } from './plot.entity';
 
 export enum PlantType {
   DEFAULT = 'default',
@@ -29,8 +30,8 @@ registerEnumType(PlantType, {
 });
 
 @ObjectType()
-@Entity()
-export class Plant extends BaseEntity {
+@Entity({ name: 'plants' })
+export class PlantEntity extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn('uuid')
   id!: string;
@@ -47,9 +48,9 @@ export class Plant extends BaseEntity {
   @Column({ nullable: true })
   type: PlantType;
 
-  @Field()
-  @ManyToOne(() => Plot, (plot) => plot.plants, { nullable: true })
-  plot: Plot;
+  @ManyToOne(() => PlotEntity, (plot: PlotEntity) => plot.plants)
+  @JoinColumn({ name: 'plot_id' })
+  plot: PlotEntity;
 
   @Field(() => String)
   @Column()

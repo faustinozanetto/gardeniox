@@ -2,15 +2,16 @@ import 'reflect-metadata';
 import cors from 'cors';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
-import { createConnection } from 'typeorm';
+import { Connection, createConnection } from 'typeorm';
 import { buildSchema } from 'type-graphql';
 import { PlantResolver } from './resolvers/plant';
 import { PlotResolver } from './resolvers/plot';
-import { Plant } from './entities/Plant';
-import { Plot } from './entities/Plot';
+import { PlantEntity } from './entities/plant.entity';
+import { PlotEntity } from './entities/plot.entity';
+
+let connection: Connection;
 
 const main = async () => {
-  let connection = null;
   try {
     // Database connection
     connection = await createConnection({
@@ -20,7 +21,7 @@ const main = async () => {
       password: '4532164mine',
       logging: true,
       synchronize: true,
-      entities: [Plant, Plot],
+      entities: [PlantEntity, PlotEntity],
     });
   } catch (error) {
     console.error(
@@ -62,6 +63,10 @@ const main = async () => {
   app.listen(5000, () => {
     console.log('🚀 Server started on http://localhost:5000');
   });
+};
+
+export const getConnection = () => {
+  return connection;
 };
 
 main().catch((error) => {
