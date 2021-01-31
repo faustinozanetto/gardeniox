@@ -2,13 +2,22 @@ import React from 'react';
 import { Formik, Form } from 'formik';
 import { Flex, Box, Heading, Stack, Button } from '@chakra-ui/react';
 import { InputField, Layout } from '../../components';
+import { useCreatePlotMutation } from '../../generated/graphql';
+import { withUrqlClient } from 'next-urql';
+import { createUrqlClient } from '../../utils/createUrqlClient';
 
 const create: React.FC<{}> = ({}) => {
+  const [, createPlot] = useCreatePlotMutation();
   return (
     <Layout variant='small'>
       <Formik
-        initialValues={{ size: '', maxPlants: '' }}
-        onSubmit={async (values) => {}}
+        initialValues={{ size: 0, maxPlants: 0 }}
+        onSubmit={async (values) => {
+          const { error } = await createPlot({ input: values });
+          if (error) {
+            console.error(error);
+          }
+        }}
       >
         {({ isSubmitting }) => (
           <Flex>
@@ -49,4 +58,4 @@ const create: React.FC<{}> = ({}) => {
   );
 };
 
-export default create;
+export default withUrqlClient(createUrqlClient)(create);
