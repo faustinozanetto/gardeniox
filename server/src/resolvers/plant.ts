@@ -5,10 +5,10 @@ import { PlotEntity } from '../entities/plot.entity';
 @InputType()
 class PlantInput {
   @Field()
-  name: string;
+  name!: string;
 
   @Field()
-  variety: string;
+  variety!: string;
 
   @Field(() => PlantType)
   type!: PlantType;
@@ -17,10 +17,10 @@ class PlantInput {
   plot!: string;
 
   @Field({ description: 'Format: YEAR/MONTH/DAY' })
-  seedSprouted: string;
+  seedSprouted!: string;
 
   @Field({ description: 'Format: YEAR/MONTH/DAY' })
-  plantedOn: string;
+  plantedOn!: string;
 }
 
 @Resolver()

@@ -17,6 +17,7 @@ export enum PlantType {
   LETTUCE = 'lettuce',
   CARROT = 'carrot',
   POTATO = 'potato',
+  PEPPER = 'pepper',
 }
 
 registerEnumType(PlantType, {

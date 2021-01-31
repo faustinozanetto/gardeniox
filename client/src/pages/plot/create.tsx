@@ -1,18 +1,28 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
-import { Flex, Box, Heading, Stack, Button } from '@chakra-ui/react';
+import { Flex, Box, Text, Stack, Button, useToast } from '@chakra-ui/react';
 import { InputField, Layout } from '../../components';
 import { useCreatePlotMutation } from '../../generated/graphql';
 import { withUrqlClient } from 'next-urql';
 import { createUrqlClient } from '../../utils/createUrqlClient';
 
 const create: React.FC<{}> = ({}) => {
+  const toast = useToast();
   const [, createPlot] = useCreatePlotMutation();
   return (
     <Layout variant='small'>
       <Formik
         initialValues={{ size: 0, maxPlants: 0 }}
         onSubmit={async (values) => {
+          if (values.size === 0 || values.maxPlants === 0) {
+            toast({
+              title: 'Error',
+              description: 'Value can not be lower than one (1)',
+              status: 'error',
+              duration: 6000,
+              isClosable: true,
+            });
+          }
           const { error } = await createPlot({ input: values });
           if (error) {
             console.error(error);
@@ -23,9 +33,16 @@ const create: React.FC<{}> = ({}) => {
           <Flex>
             <Box w={500} p={4} my={12} mx='auto'>
               <Form>
-                <Heading as='h2' p={4} textAlign='center'>
+                <Text
+                  as='h1'
+                  bgGradient='linear(to-r, teal.500,green.500)'
+                  bgClip='text'
+                  fontSize='5xl'
+                  fontWeight='extrabold'
+                  textAlign='center'
+                >
                   Create Plot
-                </Heading>
+                </Text>
                 <InputField
                   type='number'
                   name='size'

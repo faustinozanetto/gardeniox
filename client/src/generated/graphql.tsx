@@ -57,7 +57,8 @@ export enum PlantType {
   Lettuce = 'LETTUCE',
   /** Carrot */
   Carrot = 'CARROT',
-  Potato = 'POTATO'
+  Potato = 'POTATO',
+  Pepper = 'PEPPER'
 }
 
 export type PlotEntity = {
@@ -119,6 +120,19 @@ export type PlotInput = {
   maxPlants: Scalars['Float'];
 };
 
+export type CreatePlantMutationVariables = Exact<{
+  input: PlantInput;
+}>;
+
+
+export type CreatePlantMutation = (
+  { __typename?: 'Mutation' }
+  & { createPlant: (
+    { __typename?: 'PlantEntity' }
+    & Pick<PlantEntity, 'name' | 'variety' | 'type' | 'seedSprouted' | 'plantedOn'>
+  ) }
+);
+
 export type CreatePlotMutationVariables = Exact<{
   input: PlotInput;
 }>;
@@ -133,6 +147,21 @@ export type CreatePlotMutation = (
 );
 
 
+export const CreatePlantDocument = gql`
+    mutation CreatePlant($input: PlantInput!) {
+  createPlant(input: $input) {
+    name
+    variety
+    type
+    seedSprouted
+    plantedOn
+  }
+}
+    `;
+
+export function useCreatePlantMutation() {
+  return Urql.useMutation<CreatePlantMutation, CreatePlantMutationVariables>(CreatePlantDocument);
+};
 export const CreatePlotDocument = gql`
     mutation CreatePlot($input: PlotInput!) {
   createPlot(input: $input) {
