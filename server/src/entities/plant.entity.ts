@@ -33,8 +33,8 @@ registerEnumType(PlantType, {
 @Entity({ name: 'plants' })
 export class PlantEntity extends BaseEntity {
   @Field()
-  @PrimaryGeneratedColumn('uuid')
-  id!: string;
+  @PrimaryGeneratedColumn()
+  id!: number;
 
   @Field()
   @Column({ nullable: true })

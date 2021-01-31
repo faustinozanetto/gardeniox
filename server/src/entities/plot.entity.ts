@@ -14,8 +14,8 @@ import { PlantEntity } from './plant.entity';
 @Entity({ name: 'plots' })
 export class PlotEntity extends BaseEntity {
   @Field()
-  @PrimaryGeneratedColumn('uuid')
-  id!: string;
+  @PrimaryGeneratedColumn()
+  id!: number;
 
   @Field()
   @Column({ nullable: true })
@@ -25,9 +25,11 @@ export class PlotEntity extends BaseEntity {
   @Column({ nullable: true })
   maxPlants!: number;
 
-  @Field()
-  @OneToMany(() => PlantEntity, (plant) => plant.plot)
-  plants: PlantEntity[];
+  @OneToMany(() => PlantEntity, (plant: PlantEntity) => plant.plot, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  plants: Array<PlantEntity>;
 
   @Field(() => String)
   @CreateDateColumn()

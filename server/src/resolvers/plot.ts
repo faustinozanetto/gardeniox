@@ -1,6 +1,7 @@
 import { Arg, Field, InputType, Mutation, Query, Resolver } from 'type-graphql';
-import { Plant } from '../entities/plant.entity';
-import { Plot } from '../entities/plot.entity';
+import { getConnection } from 'typeorm';
+import { PlantEntity } from '../entities/plant.entity';
+import { PlotEntity } from '../entities/plot.entity';
 
 @InputType()
 class PlotInput {
@@ -13,32 +14,37 @@ class PlotInput {
 
 @Resolver()
 export class PlotResolver {
-  @Query(() => [Plot])
-  async plots(): Promise<Plot[]> {
-    return await Plot.find();
+  @Query(() => [PlotEntity])
+  async plots(): Promise<PlotEntity[]> {
+    return await PlotEntity.find();
   }
 
-  @Query(() => Plot, { nullable: true })
-  async plot(@Arg('id') id: string): Promise<Plot | undefined> {
-    return await Plot.findOne(id);
+  @Query(() => PlotEntity)
+  async plot(@Arg('id') id: number): Promise<PlotEntity | undefined> {
+    return await PlotEntity.findOne(id);
   }
 
-  @Mutation(() => Plot)
-  async createPlot(@Arg('input') input: PlotInput): Promise<Plot> {
-    return await Plot.create({
+  @Mutation(() => PlotEntity)
+  async createPlot(@Arg('input') input: PlotInput): Promise<PlotEntity> {
+    return await PlotEntity.create({
       ...input,
     }).save();
   }
 
   @Mutation(() => Boolean)
-  async deletePlot(@Arg('id') id: string): Promise<Boolean> {
-    await Plot.delete(id);
+  async deletePlot(@Arg('id') id: number): Promise<Boolean> {
+    await getConnection()
+      .createQueryBuilder()
+      .delete()
+      .from(PlotEntity)
+      .where('id = :id', { id: id })
+      .execute();
     return true;
   }
 
   @Mutation(() => Number)
-  async plantsAmount(@Arg('id') id: string): Promise<number | undefined> {
-    const plot = await Plot.findOne(id);
+  async plantsAmount(@Arg('id') id: number): Promise<number | undefined> {
+    const plot = await PlotEntity.findOne(id);
     if (!plot) {
       console.error('Plot not found');
       return;
@@ -51,9 +57,9 @@ export class PlotResolver {
     return amount;
   }
 
-  @Query(() => Plant)
-  async getPlotPlants(@Arg('id') id: string): Promise<Plant | undefined> {
-    const plot = await Plot.findOne(id);
+  @Query(() => PlantEntity)
+  async getPlotPlants(@Arg('id') id: number): Promise<PlantEntity | undefined> {
+    const plot = await PlotEntity.findOne(id);
     let plantIds;
     if (plot) {
       plantIds = plot?.plants;

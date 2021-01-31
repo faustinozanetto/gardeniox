@@ -1,7 +1,6 @@
 import { Resolver, Query, Arg, Mutation, InputType, Field } from 'type-graphql';
-import { getConnection, getRepository } from 'typeorm';
-import { Plant, PlantType } from '../entities/plant.entity';
-import { Plot } from '../entities/plot.entity';
+import { PlantEntity, PlantType } from '../entities/plant.entity';
+import { PlotEntity } from '../entities/plot.entity';
 
 @InputType()
 class PlantInput {
@@ -26,36 +25,36 @@ class PlantInput {
 
 @Resolver()
 export class PlantResolver {
-  @Query(() => [Plant])
-  async plants(): Promise<Plant[]> {
-    return Plant.find();
+  @Query(() => [PlantEntity])
+  async plants(): Promise<PlantEntity[]> {
+    return PlantEntity.find();
   }
 
-  @Query(() => Plant, { nullable: true })
-  plant(@Arg('id') id: string): Promise<Plant | undefined> {
-    return Plant.findOne(id);
+  @Query(() => PlantEntity)
+  plant(@Arg('id') id: number): Promise<PlantEntity | undefined> {
+    return PlantEntity.findOne(id);
   }
 
-  @Mutation(() => Plant)
-  async createPlant(@Arg('input') input: PlantInput): Promise<Plant> {
-    const plot = await Plot.findOne(input.plot);
-    const plant = await Plant.create({
+  @Mutation(() => PlantEntity)
+  async createPlant(@Arg('input') input: PlantInput): Promise<PlantEntity> {
+    const plot = await PlotEntity.findOne(input.plot);
+    const plant = await PlantEntity.create({
       ...input,
       plot: plot,
       seedSprouted: new Date(input.seedSprouted),
       plantedOn: new Date(input.plantedOn),
     }).save();
 
-    if (!plot) {
-      console.log('Plot not found');
-    }
-    if (plot) {
-      await getConnection()
-        .createQueryBuilder()
-        .relation(Plot, 'plants')
-        .of(plot.id)
-        .add(plant.id);
-    }
+    // if (!plot) {
+    //   console.log('Plot not found');
+    // }
+    // if (plot) {
+    //   await getConnection()
+    //     .createQueryBuilder()
+    //     .relation(PlotEntity, 'plants')
+    //     .of(plot.id)
+    //     .add(plant.id);
+    // }
     //@ts-ignore
     // await Plot.update({ plotId }, { plants: [...plant.plants, plant] });
 
@@ -63,8 +62,8 @@ export class PlantResolver {
   }
 
   @Mutation(() => Boolean)
-  async deletePlant(@Arg('id') id: string): Promise<Boolean> {
-    await Plant.delete(id);
+  async deletePlant(@Arg('id') id: number): Promise<Boolean> {
+    await PlantEntity.delete(id);
     return true;
   }
 }
