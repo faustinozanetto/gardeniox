@@ -75,7 +75,7 @@ const create: React.FC<{}> = ({}) => {
                 />
                 <Field name='type'>
                   {({ field, form }: any) => (
-                    <FormControl id='type'>
+                    <FormControl id='type' isRequired>
                       <FormLabel htmlFor='type'>Plant Type</FormLabel>
                       <Select
                         {...field}
