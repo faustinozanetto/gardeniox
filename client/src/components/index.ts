@@ -1,5 +1,4 @@
 export { Layout } from './Layout';
-export { Wrapper } from './Wrapper';
-export type { WrapperVariant } from './Wrapper';
-export { InputField } from './InputField';
-export { Navbar } from './Navbar';
+export { Wrapper } from './common/Wrapper';
+export type { WrapperVariant } from './common/Wrapper';
+export { Navbar } from './navbar/Navbar';

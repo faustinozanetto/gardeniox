@@ -1,13 +1,14 @@
-import { CSSReset } from '@chakra-ui/react';
-import { ThemeProvider } from '@emotion/react';
-import { Theme } from '../style/index';
+import React from 'react';
+import { Box, ChakraProvider, CSSReset } from '@chakra-ui/react';
 
 const App = ({ Component, pageProps }: any) => {
   return (
-    <ThemeProvider theme={Theme}>
-      <CSSReset />
-      <Component {...pageProps} />
-    </ThemeProvider>
+    <ChakraProvider>
+      <Box w='100%' h='100%' bgGradient='linear(whitesmoke 0%, white 25%)'>
+        <CSSReset />
+        <Component {...pageProps} />
+      </Box>
+    </ChakraProvider>
   );
 };
 

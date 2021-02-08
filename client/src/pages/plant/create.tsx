@@ -11,11 +11,20 @@ import {
   FormLabel,
   Select,
   FormErrorMessage,
+  Input,
 } from '@chakra-ui/react';
-import { InputField, Layout } from '../../components';
+import { FormField, InputField, Layout } from '../../components';
 import { PlantType, useCreatePlantMutation } from '../../generated/graphql';
 import { withUrqlClient } from 'next-urql';
 import { createUrqlClient } from '../../utils/createUrqlClient';
+
+function validateField(value: any) {
+  let error;
+  if (!value) {
+    error = 'Field is required';
+  }
+  return error;
+}
 
 const create: React.FC<{}> = ({}) => {
   const toast = useToast();
@@ -31,20 +40,16 @@ const create: React.FC<{}> = ({}) => {
           seedSprouted: '',
           plantedOn: '',
         }}
-        onSubmit={async (values) => {
-          // if (values.size === 0 || values.maxPlants === 0) {
-          //   toast({
-          //     title: 'Error',
-          //     description: 'Value can not be lower than one (1)',
-          //     status: 'error',
-          //     duration: 6000,
-          //     isClosable: true,
-          //   });
-          // }
+        onSubmit={async (values, actions) => {
+          console.log(values);
           const { error } = await createPlant({ input: values });
           if (error) {
             console.error(error);
           }
+          setTimeout(() => {
+            alert(JSON.stringify(values, null, 2));
+            actions.setSubmitting(false);
+          }, 1000);
         }}
       >
         {({ isSubmitting }) => (
@@ -61,19 +66,21 @@ const create: React.FC<{}> = ({}) => {
                 >
                   Create Plant
                 </Text>
-                <InputField
-                  type='text'
-                  name='name'
+                <FormField
+                  validateFieldFn={validateField}
+                  id='name'
                   placeholder='Plant Name'
-                  label='Name'
-                />
-                <InputField
+                  label='Plant Name'
                   type='text'
-                  name='variety'
+                />
+                <FormField
+                  validateFieldFn={validateField}
+                  id='variety'
                   placeholder='Plant Variety'
                   label='Variety'
+                  type='text'
                 />
-                <Field name='type'>
+                <Field name='type' validate={validateField}>
                   {({ field, form }: any) => (
                     <FormControl id='type'>
                       <FormLabel htmlFor='type'>Plant Type</FormLabel>
@@ -90,23 +97,26 @@ const create: React.FC<{}> = ({}) => {
                     </FormControl>
                   )}
                 </Field>
-                <InputField
-                  type='text'
-                  name='plot'
+                <FormField
+                  validateFieldFn={validateField}
+                  id='plot'
                   placeholder='Plant Plot ID'
                   label='Plot'
-                />
-                <InputField
                   type='text'
-                  name='seedSprouted'
+                />
+                <FormField
+                  validateFieldFn={validateField}
+                  id='seedSprouted'
                   placeholder='Seed Sprouted On'
                   label='Seed Sprouted'
-                />
-                <InputField
                   type='text'
-                  name='plantedOn'
+                />
+                <FormField
+                  validateFieldFn={validateField}
+                  id='plantedOn'
                   placeholder='Planted to Soil On'
                   label='Planted On'
+                  type='text'
                 />
                 <Stack justify='center' mt={3} isInline spacing={10}>
                   <Button

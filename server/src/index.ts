@@ -6,23 +6,14 @@ import { Connection, createConnection } from 'typeorm';
 import { buildSchema } from 'type-graphql';
 import { PlantResolver } from './resolvers/plant';
 import { PlotResolver } from './resolvers/plot';
-import { PlantEntity } from './entities/plant.entity';
-import { PlotEntity } from './entities/plot.entity';
+import { databaseOptions } from './utils/databaseConnection';
 
 let connection: Connection;
 
 const main = async () => {
   try {
     // Database connection
-    connection = await createConnection({
-      type: 'postgres',
-      database: 'gardeniox',
-      username: 'faust',
-      password: '4532164mine',
-      logging: true,
-      synchronize: true,
-      entities: [PlantEntity, PlotEntity],
-    });
+    connection = await createConnection(databaseOptions);
   } catch (error) {
     console.error(
       'An error occurred while trying to initialize connection to database!',
