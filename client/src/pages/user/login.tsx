@@ -1,24 +1,52 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { Box, Button, Flex, Heading, Spacer, Stack } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Spacer,
+  Stack,
+  useToast,
+} from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { Layout, Wrapper } from '../../components';
 import { FormField } from '../../components/forms/FormField';
+import { withUrqlClient } from 'next-urql';
+import { createUrqlClient, toErrorMap } from '../../utils';
+import { useLoginUserMutation } from '../../generated/graphql';
 
 interface LoginProps {}
 
 const Login: React.FC<LoginProps> = ({}) => {
   const router = useRouter();
+  const toast = useToast();
+  const [, loginUser] = useLoginUserMutation();
+
   return (
     <Layout>
       <Wrapper variant='small'>
         <Formik
           initialValues={{ username: '', password: '' }}
-          onSubmit={async (values, actions) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
-              actions.setSubmitting(false);
-            }, 1000);
+          onSubmit={async (values, { setErrors }) => {
+            const response = await loginUser(values);
+            const errors = response.data?.login.errors;
+            const user = response.data?.login.user;
+            if (errors) {
+              setErrors(toErrorMap(errors));
+              toast({
+                title: 'An error occurred',
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+              });
+            } else if (user) {
+              if (typeof router.query.next === 'string') {
+                router.push(router.query.next);
+              } else {
+                router.push('/');
+              }
+            }
           }}
         >
           {({ isSubmitting }) => (
@@ -82,4 +110,4 @@ const Login: React.FC<LoginProps> = ({}) => {
   );
 };
 
-export default Login;
+export default withUrqlClient(createUrqlClient)(Login);

@@ -1,36 +1,62 @@
 import React from 'react';
-import {
-  Flex,
-  Box,
-  Button,
-  Heading,
-  Spacer,
-  HStack,
-  Link,
-} from '@chakra-ui/react';
+import { Flex, Box, Button, Heading, Spacer, HStack } from '@chakra-ui/react';
 import { ThemeToggler } from './ThemeToggler';
+import { useRouter } from 'next/router';
+import { useMeQuery } from '../../generated/graphql';
 
 interface NavbarProps {}
 
 export const Navbar: React.FC<NavbarProps> = ({}) => {
   let content = null;
+  const router = useRouter();
+  const [{ data, fetching }] = useMeQuery();
 
-  content = (
-    <Flex>
-      <Box d='flex'>
-        <HStack justifyContent='center' alignItems='center'>
-          <ThemeToggler />
-          <Button colorScheme='teal' onClick={() => {}}>
-            Login
-          </Button>
-          <Spacer />
-          <Button colorScheme='linkedin' onClick={() => {}}>
-            Register
-          </Button>
-        </HStack>
-      </Box>
-    </Flex>
-  );
+  // Data is loading
+  if (fetching) {
+    content = null;
+  } else if (!data?.me) {
+    content = (
+      <Flex>
+        <Box d='flex'>
+          <HStack justifyContent='center' alignItems='center'>
+            <ThemeToggler />
+            <Button
+              colorScheme='teal'
+              onClick={() => {
+                router.push('/user/login');
+              }}
+            >
+              Login
+            </Button>
+            <Spacer />
+            <Button
+              colorScheme='linkedin'
+              onClick={() => {
+                router.push('/user/register');
+              }}
+            >
+              Register
+            </Button>
+          </HStack>
+        </Box>
+      </Flex>
+    );
+  } else {
+    content = (
+      <Flex>
+        <Box d='flex'>
+          <HStack justifyContent='center' alignItems='center'>
+            <Heading as='h3' fontSize='lg' color='white' mr={2}>
+              {data.me.username}
+            </Heading>
+            <Button colorScheme='blue' onClick={async () => {}}>
+              Logout
+            </Button>
+          </HStack>
+        </Box>
+      </Flex>
+    );
+  }
   return (
     <Flex
       zIndex={1}

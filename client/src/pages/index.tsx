@@ -1,6 +1,6 @@
 import { withUrqlClient } from 'next-urql';
 import { Layout } from '../components';
-import { createUrqlClient } from '../utils/createUrqlClient';
+import { createUrqlClient } from '../utils/index';
 
 const Index = () => {
   return <Layout></Layout>;

@@ -1,6 +1,5 @@
 import { ConnectionOptions } from 'typeorm';
-import { PlantEntity } from '../entities/plant.entity';
-import { PlotEntity } from '../entities/plot.entity';
+import { PlantEntity, PlotEntity, UserEntity } from '../entities/index';
 
 export const databaseOptions: ConnectionOptions = {
   type: 'postgres',
@@ -9,5 +8,5 @@ export const databaseOptions: ConnectionOptions = {
   password: '4532164mine',
   logging: true,
   synchronize: true,
-  entities: [PlantEntity, PlotEntity],
+  entities: [PlantEntity, PlotEntity, UserEntity],
 };

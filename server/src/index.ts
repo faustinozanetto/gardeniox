@@ -1,12 +1,17 @@
 import 'reflect-metadata';
 import cors from 'cors';
 import express from 'express';
+import Redis from 'ioredis';
 import { ApolloServer } from 'apollo-server-express';
 import { Connection, createConnection } from 'typeorm';
 import { buildSchema } from 'type-graphql';
 import { PlantResolver } from './resolvers/plant';
 import { PlotResolver } from './resolvers/plot';
 import { databaseOptions } from './utils/databaseConnection';
+import { UserResolver } from './resolvers/user';
+import connectRedis from 'connect-redis';
+import session from 'express-session';
+import { COOKIE_NAME, __prod__ } from './constants';
 
 let connection: Connection;
 
@@ -29,7 +34,10 @@ const main = async () => {
   // Express app
   const app = express();
 
-  // Cors middleware
+  // Redis setup
+  const RedisStore = connectRedis(session);
+  const redis = new Redis();
+
   app.use(
     cors({
       origin: 'http://localhost:3000',
@@ -37,12 +45,33 @@ const main = async () => {
     })
   );
 
+  // Cors middleware
+  app.use(
+    session({
+      name: COOKIE_NAME,
+      store: new RedisStore({
+        client: redis,
+        disableTouch: true,
+      }),
+      cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: __prod__, // cookie only works in https
+      },
+      saveUninitialized: false,
+      secret: 'qowiueojwojfalksdjoqiwueo',
+      resave: false,
+    })
+  );
+
+  // Creating apollo server
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [PlantResolver, PlotResolver],
+      resolvers: [UserResolver, PlantResolver, PlotResolver],
       validate: false,
     }),
-    context: ({ req, res }) => ({ req, res }),
+    context: ({ req, res }) => ({ req, res, redis }),
   });
 
   apolloServer.applyMiddleware({
