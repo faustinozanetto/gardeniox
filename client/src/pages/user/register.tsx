@@ -4,17 +4,24 @@ import { Box, Button, Flex, Heading, Spacer, Stack } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { Layout, Wrapper } from '../../components';
 import { FormField } from '../../components/forms/FormField';
+import { useRegisterUserMutation } from '../../generated/graphql';
+import { createUrqlClient } from '../../utils';
+import { withUrqlClient } from 'next-urql';
 
 interface LoginProps {}
 
-const Login: React.FC<LoginProps> = ({}) => {
+const Register: React.FC<LoginProps> = ({}) => {
   const router = useRouter();
+  const [, registerUser] = useRegisterUserMutation();
   return (
     <Layout>
       <Wrapper variant='small'>
         <Formik
           initialValues={{ email: '', username: '', password: '' }}
-          onSubmit={async (values, actions) => {}}
+          onSubmit={async (values, actions) => {
+            const response = await registerUser({ options: values });
+            console.log(response);
+          }}
         >
           {({ isSubmitting }) => (
             <Flex>
@@ -74,4 +81,4 @@ const Login: React.FC<LoginProps> = ({}) => {
   );
 };
 
-export default Login;
+export default withUrqlClient(createUrqlClient)(Register);

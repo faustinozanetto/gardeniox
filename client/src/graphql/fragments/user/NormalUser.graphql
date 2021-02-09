@@ -1,0 +1,5 @@
+fragment NormalUser on UserEntity {
+  id
+  username
+  email
+}
