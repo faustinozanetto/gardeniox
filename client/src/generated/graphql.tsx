@@ -90,6 +90,7 @@ export type Mutation = {
   plantsAmount: Scalars['Float'];
   register: UserResponse;
   login: UserResponse;
+  logout: Scalars['Boolean'];
 };
 
 export type MutationCreatePlantArgs = {
@@ -201,6 +202,13 @@ export type LoginUserMutation = { __typename?: 'Mutation' } & {
   login: { __typename?: 'UserResponse' } & NormalUserResponseFragment;
 };
 
+export type UserLogoutMutationVariables = Exact<{ [key: string]: never }>;
+
+export type UserLogoutMutation = { __typename?: 'Mutation' } & Pick<
+  Mutation,
+  'logout'
+>;
+
 export type RegisterUserMutationVariables = Exact<{
   options: UserCredentialsInput;
 }>;
@@ -283,6 +291,17 @@ export const LoginUserDocument = gql`
 export function useLoginUserMutation() {
   return Urql.useMutation<LoginUserMutation, LoginUserMutationVariables>(
     LoginUserDocument
+  );
+}
+export const UserLogoutDocument = gql`
+  mutation UserLogout {
+    logout
+  }
+`;
+
+export function useUserLogoutMutation() {
+  return Urql.useMutation<UserLogoutMutation, UserLogoutMutationVariables>(
+    UserLogoutDocument
   );
 }
 export const RegisterUserDocument = gql`

@@ -6,6 +6,7 @@ import { validateUserRegister } from '../utils';
 import { UserEntity } from '../entities/index';
 import argon2 from 'argon2';
 import { getConnection } from 'typeorm';
+import { COOKIE_NAME } from '../constants';
 
 @Resolver()
 export class UserResolver {
@@ -91,6 +92,20 @@ export class UserResolver {
     return {
       user,
     };
+  }
+
+  @Mutation(() => Boolean)
+  logout(@Ctx() { req, res }: GardenioxContext) {
+    return new Promise((resolve) =>
+      req.session.destroy((error) => {
+        res.clearCookie(COOKIE_NAME);
+        if (error) {
+          resolve(false);
+          return;
+        }
+        resolve(true);
+      })
+    );
   }
 
   @Query(() => UserEntity, { nullable: true })

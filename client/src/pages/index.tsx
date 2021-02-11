@@ -1,9 +1,14 @@
+import React from 'react';
 import { withUrqlClient } from 'next-urql';
-import { Layout } from '../components';
-import { createUrqlClient } from '../utils/index';
+import { createUrqlClient } from '../utils';
+import { AppLayout } from '../layout/AppLayout';
 
-const Index = () => {
-  return <Layout></Layout>;
+const Home = () => {
+  return (
+    <AppLayout>
+      <h1>hi</h1>
+    </AppLayout>
+  );
 };
 
-export default withUrqlClient(createUrqlClient, { ssr: true })(Index);
+export default withUrqlClient(createUrqlClient, { ssr: true })(Home);
