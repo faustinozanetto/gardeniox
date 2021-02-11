@@ -7,7 +7,7 @@ import { Connection, createConnection } from 'typeorm';
 import { buildSchema } from 'type-graphql';
 import { PlantResolver } from './resolvers/plant';
 import { PlotResolver } from './resolvers/plot';
-import { databaseOptions } from './utils/databaseConnection';
+import { getDatabaseOptions } from './utils';
 import { UserResolver } from './resolvers/user';
 import connectRedis from 'connect-redis';
 import session from 'express-session';
@@ -18,7 +18,7 @@ let connection: Connection;
 const main = async () => {
   try {
     // Database connection
-    connection = await createConnection(databaseOptions);
+    connection = await createConnection(getDatabaseOptions());
   } catch (error) {
     console.error(
       'An error occurred while trying to initialize connection to database!',
