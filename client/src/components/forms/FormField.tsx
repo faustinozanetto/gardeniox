@@ -6,15 +6,17 @@ import {
   FormHelperText,
   FormLabel,
   Input,
+  InputProps,
 } from '@chakra-ui/react';
 import { useField } from 'formik';
 
-type FormFieldProps = InputHTMLAttributes<HTMLInputElement> & {
-  label: string;
-  name: string;
-  helperText?: string;
-  isRequired?: boolean;
-};
+type FormFieldProps = InputProps &
+  InputHTMLAttributes<HTMLInputElement> & {
+    label: string;
+    name: string;
+    helperText?: string;
+    isRequired?: boolean;
+  };
 
 export const FormField: React.FC<FormFieldProps> = ({
   label,

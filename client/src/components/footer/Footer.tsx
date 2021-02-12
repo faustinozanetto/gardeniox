@@ -11,6 +11,7 @@ import {
   SimpleGrid,
   useColorModeValue,
   Flex,
+  Heading,
 } from '@chakra-ui/react';
 
 interface FooterProps {}
@@ -28,10 +29,6 @@ const SOCIAL_LINKS = [
     label: 'Twitter Account',
     href: 'TWITTER_LINK',
   },
-  {
-    label: 'Figma Design Ressources',
-    href: 'FIGMA_LINK',
-  },
 ];
 
 export const Footer: React.FC<FooterProps> = ({}) => {
@@ -45,19 +42,20 @@ export const Footer: React.FC<FooterProps> = ({}) => {
         <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} mb={6} spacing={6}>
           <Flex justify={'center'} align={'center'}>
             <Link href={'/'} passHref>
-              <Icon as={GardenioxLogo} w={{ base: 12 }} h={{ base: 12 }} />
+              {/* <Icon as={GardenioxLogo} w={{ base: 12 }} h={{ base: 12 }} /> */}
+              <Heading
+                mt='6'
+                mb={6}
+                textAlign='center'
+                size='3xl'
+                fontWeight='bold'
+                bgClip='text'
+                bgGradient='linear(to-l, #7928CA, #FF0080)'
+              >
+                Gardeniox
+              </Heading>
             </Link>
           </Flex>
-          <Stack spacing={4}>
-            <Text fontFamily={'heading'} fontSize={'lg'} fontWeight='bold'>
-              Social
-            </Text>
-            <Stack align={'start'}>
-              {SOCIAL_LINKS.map((link) => (
-                <Link href={link.href}>{link.label}</Link>
-              ))}
-            </Stack>
-          </Stack>
           <Stack spacing={4}>
             <Text fontFamily={'heading'} fontSize={'lg'} fontWeight='bold'>
               Social

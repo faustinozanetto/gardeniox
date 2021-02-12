@@ -4,7 +4,6 @@ import {
   Flex,
   Text,
   IconButton,
-  Button,
   Stack,
   Collapse,
   Icon,
@@ -15,6 +14,7 @@ import {
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
+  BoxProps,
 } from '@chakra-ui/react';
 import {
   HamburgerIcon,
@@ -24,26 +24,41 @@ import {
 } from '@chakra-ui/icons';
 import { ThemeToggler } from './ThemeToggler';
 import { useRouter } from 'next/router';
-import { useMeQuery, useUserLogoutMutation } from '../../generated/graphql';
+import { MeQuery, useMeQuery } from '../../generated/graphql';
+import { NavbarUserDetails } from './NavbarUserDetails';
+import { DesktopNavbarUserButtons } from './DesktopNavbarUserButtons';
+import { MobileNavbarUserButtons } from './MobileNavbarUserButtons';
 
-export const Navbar = () => {
+export const Navbar = (props: BoxProps) => {
   const { isOpen, onToggle } = useDisclosure();
-  const [{ fetching: logoutFetching }, logout] = useUserLogoutMutation();
-  const [{ data, fetching }] = useMeQuery();
+  const [{ data: userData }] = useMeQuery();
   const router = useRouter();
 
   return (
-    <Box>
+    <Box {...props}>
       <Flex
+        as='header'
         bg={useColorModeValue('white', 'gray.800')}
         color={useColorModeValue('gray.600', 'white')}
-        minH={'60px'}
+        minH={'80px'}
+        w={'full'}
         py={{ base: 2 }}
         px={{ base: 4 }}
+        boxShadow={'sm'}
+        pos={{ base: 'inherit', md: 'fixed', lg: 'fixed' }}
+        top='0'
         borderBottom={1}
         borderStyle={'solid'}
         borderColor={useColorModeValue('gray.200', 'gray.900')}
         align={'center'}
+        zIndex='999'
+        css={{
+          backdropFilter: 'saturate(180%) blur(5px)',
+          backgroundColor: useColorModeValue(
+            'rgba(255, 255, 255, 0.8)',
+            'rgba(26, 32, 44, 0.8)'
+          ),
+        }}
       >
         <Flex
           flex={{ base: 1, md: 'auto' }}
@@ -66,6 +81,9 @@ export const Navbar = () => {
             color={useColorModeValue('gray.800', 'white')}
             fontSize='3xl'
             fontWeight='bold'
+            size='4xl'
+            bgClip='text'
+            bgGradient='linear(to-l, #7928CA, #FF0080)'
           >
             Gardeniox
           </Text>
@@ -81,40 +99,19 @@ export const Navbar = () => {
           direction={'row'}
           spacing={6}
         >
-          <Button
-            as={'a'}
-            fontSize={'sm'}
-            fontWeight={400}
-            variant={'link'}
-            href={'#'}
-            onClick={() => {
-              router.push('/user/login');
-            }}
-          >
-            Sign In
-          </Button>
-          <Button
-            display={{ base: 'none', md: 'inline-flex' }}
-            fontSize={'sm'}
-            fontWeight={600}
-            color={'white'}
-            bg={'pink.400'}
-            href={'#'}
-            _hover={{
-              bg: 'pink.300',
-            }}
-            onClick={() => {
-              router.push('/user/register');
-            }}
-          >
-            Register
-          </Button>
+          <Box display={{ base: 'none', md: 'inherit' }}>
+            {userData?.me ? (
+              <NavbarUserDetails user={userData} />
+            ) : (
+              <DesktopNavbarUserButtons />
+            )}
+          </Box>
           <ThemeToggler />
         </Stack>
       </Flex>
 
       <Collapse in={isOpen} animateOpacity>
-        <MobileNav />
+        <MobileNav user={userData} />
       </Collapse>
     </Box>
   );
@@ -207,7 +204,11 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
   );
 };
 
-const MobileNav = () => {
+type MobileNavProps = {
+  user: MeQuery | undefined;
+};
+
+const MobileNav = ({ user }: MobileNavProps) => {
   return (
     <Stack
       bg={useColorModeValue('white', 'gray.800')}
@@ -217,6 +218,11 @@ const MobileNav = () => {
       {NAV_ITEMS.map((navItem) => (
         <MobileNavItem key={navItem.label} {...navItem} />
       ))}
+      {user?.me ? (
+        <NavbarUserDetails user={user} />
+      ) : (
+        <MobileNavbarUserButtons />
+      )}
     </Stack>
   );
 };
@@ -286,13 +292,8 @@ const NAV_ITEMS: Array<NavItem> = [
     label: 'Dashboard',
     children: [
       {
-        label: 'Explore Design Work',
+        label: 'Explore the Gardeniox Dashboard',
         subLabel: 'Trending Design to inspire you',
-        href: '#',
-      },
-      {
-        label: 'New & Noteworthy',
-        subLabel: 'Up-and-coming Designers',
         href: '#',
       },
     ],
@@ -305,9 +306,14 @@ const NAV_ITEMS: Array<NavItem> = [
         subLabel: 'Create a new plant.',
         href: '#',
       },
+    ],
+  },
+  {
+    label: 'Plots',
+    children: [
       {
-        label: 'Freelance Projects',
-        subLabel: 'An exclusive list for contract work',
+        label: 'Create',
+        subLabel: 'Create a new plant.',
         href: '#',
       },
     ],
