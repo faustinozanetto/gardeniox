@@ -1,16 +1,17 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
 import { Flex, Box, Text, Stack, Button, useToast } from '@chakra-ui/react';
-import { InputField, Layout } from '../../components';
+import { FormField } from '../../components/forms/FormField';
 import { useCreatePlotMutation } from '../../generated/graphql';
 import { withUrqlClient } from 'next-urql';
 import { createUrqlClient } from '../../utils/createUrqlClient';
+import { AppLayout } from '../../layout/AppLayout';
 
 const create: React.FC<{}> = ({}) => {
   const toast = useToast();
   const [, createPlot] = useCreatePlotMutation();
   return (
-    <Layout variant='small'>
+    <AppLayout>
       <Formik
         initialValues={{ size: 0, maxPlants: 0 }}
         onSubmit={async (values) => {
@@ -43,13 +44,13 @@ const create: React.FC<{}> = ({}) => {
                 >
                   Create Plot
                 </Text>
-                <InputField
+                <FormField
                   type='number'
                   name='size'
                   placeholder='Plot Size'
                   label='Size'
                 />
-                <InputField
+                <FormField
                   type='number'
                   name='maxPlants'
                   placeholder='Max Plants per Plot'
@@ -71,7 +72,7 @@ const create: React.FC<{}> = ({}) => {
           </Flex>
         )}
       </Formik>
-    </Layout>
+    </AppLayout>
   );
 };
 

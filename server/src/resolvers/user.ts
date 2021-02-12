@@ -1,5 +1,13 @@
 import { GardenioxContext } from '../types';
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
+import {
+  Arg,
+  Ctx,
+  Field,
+  Mutation,
+  ObjectType,
+  Query,
+  Resolver,
+} from 'type-graphql';
 import { UserResponse } from '../responses';
 import { UserCredentialsInput } from '../inputs';
 import { validateUserRegister } from '../utils';
@@ -8,8 +16,21 @@ import argon2 from 'argon2';
 import { getConnection } from 'typeorm';
 import { COOKIE_NAME } from '../constants';
 
+@ObjectType()
+class Users {
+  @Field(() => [UserEntity])
+  foundUsers: UserEntity[];
+}
+
 @Resolver()
 export class UserResolver {
+  @Query(() => Users)
+  async getUsers(): Promise<Users> {
+    const foundUsers = await UserEntity.find();
+    return {
+      foundUsers,
+    };
+  }
   @Mutation(() => UserResponse)
   async register(
     @Arg('options') options: UserCredentialsInput,

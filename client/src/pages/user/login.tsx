@@ -1,109 +1,90 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 import {
   Box,
   Button,
-  Flex,
   Heading,
-  Spacer,
-  Stack,
-  useToast,
+  SimpleGrid,
+  Text,
+  useColorModeValue,
+  VisuallyHidden,
 } from '@chakra-ui/react';
-import { Form, Formik } from 'formik';
-import { FormField } from '../../components/forms/FormField';
 import { withUrqlClient } from 'next-urql';
-import { createUrqlClient, toErrorMap } from '../../utils';
-import { useLoginUserMutation } from '../../generated/graphql';
+import { FaFacebook, FaGoogle, FaGithub } from 'react-icons/fa';
+import { createUrqlClient } from '../../utils';
+import { AppLayout } from '../../layout/AppLayout';
+import { LoginForm } from '../../components/forms/LoginForm';
+import { TextDivider } from '../../components/common/TextDivider';
 
 interface LoginProps {}
 
 const Login: React.FC<LoginProps> = ({}) => {
-  const router = useRouter();
-  const toast = useToast();
-  const [, loginUser] = useLoginUserMutation();
-
   return (
-    <Box>
-      <Formik
-        initialValues={{ username: '', password: '' }}
-        onSubmit={async (values, { setErrors }) => {
-          const response = await loginUser(values);
-          const errors = response.data?.login.errors;
-          const user = response.data?.login.user;
-          if (errors) {
-            setErrors(toErrorMap(errors));
-            toast({
-              title: 'An error occurred',
-              status: 'error',
-              duration: 9000,
-              isClosable: true,
-            });
-          } else if (user) {
-            if (typeof router.query.next === 'string') {
-              router.push(router.query.next);
-            } else {
-              router.push('/');
-            }
-          }
-        }}
+    <AppLayout>
+      <Box
+        bg={useColorModeValue('gray.50', 'inherit')}
+        minH='100vh'
+        mt='12'
+        py='12'
+        px={{ sm: '6', lg: '8' }}
       >
-        {({ isSubmitting }) => (
-          <Flex>
+        <Box maxW={{ sm: 'md' }} mx={{ sm: 'auto' }} w={{ sm: 'full' }}>
+          <Heading
+            mt='6'
+            mb={6}
+            textAlign='center'
+            size='4xl'
+            fontWeight='bold'
+            bgClip='text'
+            bgGradient='linear(to-l, #7928CA, #FF0080)'
+          >
+            Gardeniox
+          </Heading>
+          <Heading mt='6' textAlign='center' size='xl' fontWeight='bold'>
+            Sign in to your account
+          </Heading>
+          <Text mt='4' align='center' maxW='md' fontWeight='medium'>
+            <span>Don't have an account?</span>
             <Box
-              w={600}
-              p={4}
-              mt={12}
-              mx='auto'
-              borderRadius={10}
-              boxShadow='2xl'
+              as='a'
+              marginStart='1'
+              href='/user/register'
+              color={useColorModeValue('blue.600', 'blue.200')}
+              fontWeight='medium'
+              _hover={{ color: 'blue.600' }}
+              display={{ base: 'block', sm: 'revert' }}
             >
-              <Form>
-                <Heading as='h2' p={4} textAlign='center'>
-                  Login
-                </Heading>
-                <FormField
-                  name='username'
-                  label='Username'
-                  placeholder='Username'
-                  type='text'
-                  isRequired
-                />
-                <FormField
-                  name='password'
-                  label='Password'
-                  placeholder='Password'
-                  type='password'
-                  isRequired
-                />
-                <Stack justify='center' mt={6} isInline>
-                  <Button
-                    ml={2}
-                    w='100%'
-                    colorScheme='red'
-                    onClick={() => {
-                      router.push('/user/forgot-password');
-                    }}
-                  >
-                    Forgot Password?
-                  </Button>
-                  <Spacer />
-                  <Button
-                    mr={2}
-                    w='100%'
-                    colorScheme='blue'
-                    loadingText='Submitting'
-                    isLoading={isSubmitting}
-                    type='submit'
-                  >
-                    Login
-                  </Button>
-                </Stack>
-              </Form>
+              Register One!
             </Box>
-          </Flex>
-        )}
-      </Formik>
-    </Box>
+          </Text>
+        </Box>
+        <Box maxW={{ sm: 'md' }} mx={{ sm: 'auto' }} mt='4' w={{ sm: 'full' }}>
+          <Box
+            bg={useColorModeValue('white', 'gray.700')}
+            py='8'
+            px={{ base: '4', md: '10' }}
+            shadow='base'
+            rounded={{ sm: 'lg' }}
+          >
+            <LoginForm />
+            <TextDivider mt='6'>or continue with</TextDivider>
+            <SimpleGrid mt='6' columns={3} spacing='3'>
+              <Button color='currentColor' variant='outline'>
+                <VisuallyHidden>Login with Facebook</VisuallyHidden>
+                <FaFacebook />
+              </Button>
+              <Button color='currentColor' variant='outline'>
+                <VisuallyHidden>Login with Google</VisuallyHidden>
+                <FaGoogle />
+              </Button>
+              <Button color='currentColor' variant='outline'>
+                <VisuallyHidden>Login with Github</VisuallyHidden>
+                <FaGithub />
+              </Button>
+            </SimpleGrid>
+          </Box>
+        </Box>
+      </Box>
+    </AppLayout>
   );
 };
 

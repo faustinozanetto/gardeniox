@@ -146,11 +146,15 @@ import {
   FormErrorMessage,
   Input,
 } from '@chakra-ui/react';
-import { FormField, InputField, Layout } from '../../components';
+import { FormField } from '../../components/forms/FormField';
 import { PlantType, useCreatePlantMutation } from '../../generated/graphql';
 import { withUrqlClient } from 'next-urql';
 import { createUrqlClient } from '../../utils/createUrqlClient';
+import { AppLayout } from '../../layout/AppLayout';
 
+{
+  /* @ts-ignore  */
+}
 function validateField(value: any) {
   let error;
   if (!value) {
@@ -163,7 +167,7 @@ const create: React.FC<{}> = ({}) => {
   const toast = useToast();
   const [, createPlant] = useCreatePlantMutation();
   return (
-    <Layout variant='small'>
+    <AppLayout>
       <Formik
         initialValues={{
           name: '',
@@ -200,15 +204,17 @@ const create: React.FC<{}> = ({}) => {
                   Create Plant
                 </Text>
                 <FormField
-                  validateFieldFn={validateField}
+                  // validateFieldFn={validateField}
                   id='name'
+                  name='name'
                   placeholder='Plant Name'
                   label='Plant Name'
                   type='text'
                 />
                 <FormField
-                  validateFieldFn={validateField}
+                  // validateFieldFn={validateField}
                   id='variety'
+                  name='variety'
                   placeholder='Plant Variety'
                   label='Variety'
                   type='text'
@@ -231,22 +237,25 @@ const create: React.FC<{}> = ({}) => {
                   )}
                 </Field>
                 <FormField
-                  validateFieldFn={validateField}
+                  // validateFieldFn={validateField}
                   id='plot'
+                  name='plot'
                   placeholder='Plant Plot ID'
                   label='Plot'
                   type='text'
                 />
                 <FormField
-                  validateFieldFn={validateField}
+                  // validateFieldFn={validateField}
                   id='seedSprouted'
+                  name='seedSprouted'
                   placeholder='Seed Sprouted On'
                   label='Seed Sprouted'
                   type='text'
                 />
                 <FormField
-                  validateFieldFn={validateField}
+                  // validateFieldFn={validateField}
                   id='plantedOn'
+                  name='plantedOn'
                   placeholder='Planted to Soil On'
                   label='Planted On'
                   type='text'
@@ -267,7 +276,7 @@ const create: React.FC<{}> = ({}) => {
           </Flex>
         )}
       </Formik>
-    </Layout>
+    </AppLayout>
   );
 };
 
