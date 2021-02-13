@@ -1,5 +1,5 @@
 import { ConnectionOptions } from 'typeorm';
-import { PlantEntity, PlotEntity, UserEntity } from '../entities/index';
+import { Disease, Plant, Plot, User } from '../entities/index';
 
 export const getDatabaseOptions = (): ConnectionOptions => {
   return {
@@ -9,6 +9,6 @@ export const getDatabaseOptions = (): ConnectionOptions => {
     password: '4532164mine',
     logging: true,
     synchronize: true,
-    entities: [PlantEntity, PlotEntity, UserEntity],
+    entities: [Plant, Plot, User, Disease],
   };
 };

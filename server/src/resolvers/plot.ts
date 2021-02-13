@@ -1,7 +1,6 @@
 import { Arg, Field, InputType, Mutation, Query, Resolver } from 'type-graphql';
 import { getConnection } from 'typeorm';
-import { PlantEntity } from '../entities/plant.entity';
-import { PlotEntity } from '../entities/plot.entity';
+import { Plant, Plot } from '../entities/index';
 
 @InputType()
 class PlotInput {
@@ -14,19 +13,19 @@ class PlotInput {
 
 @Resolver()
 export class PlotResolver {
-  @Query(() => [PlotEntity])
-  async plots(): Promise<PlotEntity[]> {
-    return await PlotEntity.find();
+  @Query(() => [Plot])
+  async plots(): Promise<Plot[]> {
+    return await Plot.find();
   }
 
-  @Query(() => PlotEntity)
-  async plot(@Arg('id') id: number): Promise<PlotEntity | undefined> {
-    return await PlotEntity.findOne(id);
+  @Query(() => Plot)
+  async plot(@Arg('id') id: number): Promise<Plot | undefined> {
+    return await Plot.findOne(id);
   }
 
-  @Mutation(() => PlotEntity)
-  async createPlot(@Arg('input') input: PlotInput): Promise<PlotEntity> {
-    return await PlotEntity.create({
+  @Mutation(() => Plot)
+  async createPlot(@Arg('input') input: PlotInput): Promise<Plot> {
+    return await Plot.create({
       ...input,
     }).save();
   }
@@ -36,7 +35,7 @@ export class PlotResolver {
     await getConnection()
       .createQueryBuilder()
       .delete()
-      .from(PlotEntity)
+      .from(Plot)
       .where('id = :id', { id: id })
       .execute();
     return true;
@@ -44,7 +43,7 @@ export class PlotResolver {
 
   @Mutation(() => Number)
   async plantsAmount(@Arg('id') id: number): Promise<number | undefined> {
-    const plot = await PlotEntity.findOne(id);
+    const plot = await Plot.findOne(id);
     if (!plot) {
       console.error('Plot not found');
       return;
@@ -57,9 +56,9 @@ export class PlotResolver {
     return amount;
   }
 
-  @Query(() => PlantEntity)
-  async getPlotPlants(@Arg('id') id: number): Promise<PlantEntity | undefined> {
-    const plot = await PlotEntity.findOne(id);
+  @Query(() => Plant)
+  async getPlotPlants(@Arg('id') id: number): Promise<Plant | undefined> {
+    const plot = await Plot.findOne(id);
     let plantIds;
     if (plot) {
       plantIds = plot?.plants;

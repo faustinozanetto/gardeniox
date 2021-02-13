@@ -1,6 +1,6 @@
 import { Field, ObjectType } from 'type-graphql';
 import { FieldError } from './FieldError';
-import { UserEntity } from '../entities/index';
+import { User } from '../entities/index';
 
 @ObjectType()
 export class UserResponse {
@@ -13,6 +13,6 @@ export class UserResponse {
   /**
    * User
    */
-  @Field(() => UserEntity, { nullable: true })
-  user?: UserEntity;
+  @Field(() => User, { nullable: true })
+  user?: User;
 }
