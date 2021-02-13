@@ -8,9 +8,9 @@ interface AppLayoutProps {
 export const AppLayout = ({ children }: AppLayoutProps) => {
   return (
     <>
-      <Navbar />
+      <Navbar mb={20} />
       {children}
-      <Footer />
+      <Footer mt={12} />
     </>
   );
 };

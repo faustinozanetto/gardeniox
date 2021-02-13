@@ -8,11 +8,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { PlantEntity } from './plant.entity';
+import { Plant } from './index';
 
 @ObjectType()
 @Entity({ name: 'plots' })
-export class PlotEntity extends BaseEntity {
+export class Plot extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id!: number;
@@ -25,11 +25,11 @@ export class PlotEntity extends BaseEntity {
   @Column({ nullable: true })
   maxPlants!: number;
 
-  @OneToMany(() => PlantEntity, (plant: PlantEntity) => plant.plot, {
+  @OneToMany(() => Plant, (plant: Plant) => plant.plot, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
-  plants: Array<PlantEntity>;
+  plants: Array<Plant>;
 
   @Field(() => String)
   @CreateDateColumn()

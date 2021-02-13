@@ -6,10 +6,11 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { PlotEntity } from './plot.entity';
+import { Plot, Disease } from './index';
 
 export enum PlantType {
   DEFAULT = 'default',
@@ -32,7 +33,7 @@ registerEnumType(PlantType, {
 
 @ObjectType()
 @Entity({ name: 'plants' })
-export class PlantEntity extends BaseEntity {
+export class Plant extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id!: number;
@@ -49,9 +50,12 @@ export class PlantEntity extends BaseEntity {
   @Column({ nullable: true })
   type: PlantType;
 
-  @ManyToOne(() => PlotEntity, (plot: PlotEntity) => plot.plants)
+  @ManyToOne(() => Plot, (plot: Plot) => plot.plants)
   @JoinColumn({ name: 'plot_id' })
-  plot: PlotEntity;
+  plot: Plot;
+
+  @OneToMany(() => Disease, (disease) => disease.plant)
+  diseases: Disease[];
 
   @Field(() => String)
   @Column()

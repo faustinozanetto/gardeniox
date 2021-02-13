@@ -1,6 +1,7 @@
 import { Resolver, Query, Arg, Mutation, InputType, Field } from 'type-graphql';
-import { PlantEntity, PlantType } from '../entities/plant.entity';
-import { PlotEntity } from '../entities/plot.entity';
+import { Plant, PlantType } from '../entities/plant.entity';
+import { Disease, Plot } from '../entities';
+import { getConnection, getRepository } from 'typeorm';
 
 @InputType()
 class PlantInput {
@@ -25,20 +26,20 @@ class PlantInput {
 
 @Resolver()
 export class PlantResolver {
-  @Query(() => [PlantEntity])
-  async plants(): Promise<PlantEntity[]> {
-    return PlantEntity.find();
+  @Query(() => [Plant])
+  async plants(): Promise<Plant[]> {
+    return Plant.find();
   }
 
-  @Query(() => PlantEntity)
-  plant(@Arg('id') id: number): Promise<PlantEntity | undefined> {
-    return PlantEntity.findOne(id);
+  @Query(() => Plant)
+  plant(@Arg('id') id: number): Promise<Plant | undefined> {
+    return Plant.findOne(id);
   }
 
-  @Mutation(() => PlantEntity)
-  async createPlant(@Arg('input') input: PlantInput): Promise<PlantEntity> {
-    const plot = await PlotEntity.findOne(input.plot);
-    const plant = await PlantEntity.create({
+  @Mutation(() => Plant)
+  async createPlant(@Arg('input') input: PlantInput): Promise<Plant> {
+    const plot = await Plot.findOne(input.plot);
+    const plant = await Plant.create({
       ...input,
       plot: plot,
       seedSprouted: new Date(input.seedSprouted),
@@ -63,7 +64,24 @@ export class PlantResolver {
 
   @Mutation(() => Boolean)
   async deletePlant(@Arg('id') id: number): Promise<Boolean> {
-    await PlantEntity.delete(id);
+    await Plant.delete(id);
     return true;
+  }
+
+  @Query(() => Boolean)
+  async hasDisease(@Arg('id') id: number, @Arg('name') name: string) {
+    const disease = await Disease.findOne({ where: { name } });
+    if (!disease) {
+      console.log('Could not found a disease with the given name!');
+      return false;
+    }
+    const plant = await Plant.findOne(id);
+    if (!plant) {
+      console.log('Could not found a plant with the given id!');
+      return false;
+    }
+    const plantRepo = getRepository(Plant);
+    const diseases = await plantRepo.find({ relations: ['diseases'] });
+    console.log(diseases);
   }
 }

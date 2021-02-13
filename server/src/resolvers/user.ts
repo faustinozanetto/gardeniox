@@ -11,7 +11,7 @@ import {
 import { UserResponse } from '../responses';
 import { UserCredentialsInput } from '../inputs';
 import { validateUserRegister } from '../utils';
-import { UserEntity } from '../entities/index';
+import { User } from '../entities/index';
 import argon2 from 'argon2';
 import { getConnection } from 'typeorm';
 import { COOKIE_NAME } from '../constants';
@@ -47,7 +47,7 @@ export class UserResolver {
       const result = await getConnection()
         .createQueryBuilder()
         .insert()
-        .into(UserEntity)
+        .into(User)
         .values({
           username: options.username,
           email: options.email,
@@ -83,7 +83,7 @@ export class UserResolver {
     @Arg('password') password: string,
     @Ctx() { req }: GardenioxContext
   ): Promise<UserResponse> {
-    const user = await UserEntity.findOne({ where: { username } });
+    const user = await User.findOne({ where: { username } });
 
     if (!user) {
       return {
@@ -129,12 +129,12 @@ export class UserResolver {
     );
   }
 
-  @Query(() => UserEntity, { nullable: true })
+  @Query(() => User, { nullable: true })
   me(@Ctx() { req }: GardenioxContext) {
     const userId = req.session.userId;
     if (!userId) {
       return null;
     }
-    return UserEntity.findOne(userId);
+    return User.findOne(userId);
   }
 }

@@ -35,7 +35,7 @@ export const Navbar = (props: BoxProps) => {
   const router = useRouter();
 
   return (
-    <Box {...props}>
+    <Box pb={{ base: 4, sm: 8 }} {...props}>
       <Flex
         as='header'
         bg={useColorModeValue('white', 'gray.800')}
@@ -76,12 +76,14 @@ export const Navbar = (props: BoxProps) => {
         </Flex>
         <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
           <Text
+            as={'a'}
             textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
             fontFamily={'heading'}
             color={useColorModeValue('gray.800', 'white')}
             fontSize='3xl'
             fontWeight='bold'
             size='4xl'
+            href='/'
             bgClip='text'
             bgGradient='linear(to-l, #7928CA, #FF0080)'
           >
@@ -132,7 +134,7 @@ const DesktopNav = () => {
               <Link
                 p={2}
                 href={navItem.href ?? '#'}
-                fontSize={'sm'}
+                fontSize={'md'}
                 fontWeight={500}
                 color={useColorModeValue('gray.600', 'gray.200')}
                 _hover={{
@@ -294,7 +296,7 @@ const NAV_ITEMS: Array<NavItem> = [
       {
         label: 'Explore the Gardeniox Dashboard',
         subLabel: 'Trending Design to inspire you',
-        href: '#',
+        href: '/dashboard',
       },
     ],
   },

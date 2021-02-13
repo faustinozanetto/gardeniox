@@ -1,9 +1,6 @@
 import React from 'react';
-import { GardenioxLogo } from '../logo/GardenioxLogo';
-import NextLink from 'next/link';
 import {
   Container,
-  Icon,
   Box,
   Stack,
   Text,
@@ -12,9 +9,8 @@ import {
   useColorModeValue,
   Flex,
   Heading,
+  BoxProps,
 } from '@chakra-ui/react';
-
-interface FooterProps {}
 
 const SOCIAL_LINKS = [
   {
@@ -31,12 +27,13 @@ const SOCIAL_LINKS = [
   },
 ];
 
-export const Footer: React.FC<FooterProps> = ({}) => {
+export const Footer = (props: BoxProps) => {
   return (
     <Box
       bg={useColorModeValue('gray.100', 'gray.900')}
       color={useColorModeValue('gray.600', 'gray.500')}
       py={{ base: 4, sm: 8 }}
+      {...props}
     >
       <Container maxW={'7xl'}>
         <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} mb={6} spacing={6}>
