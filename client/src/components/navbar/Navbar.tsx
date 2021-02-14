@@ -28,6 +28,7 @@ import { MeQuery, useMeQuery } from '../../generated/graphql';
 import { NavbarUserDetails } from './NavbarUserDetails';
 import { DesktopNavbarUserButtons } from './DesktopNavbarUserButtons';
 import { MobileNavbarUserButtons } from './MobileNavbarUserButtons';
+import { UserDetails } from './UserDetails';
 
 export const Navbar = (props: BoxProps) => {
   const { isOpen, onToggle } = useDisclosure();
@@ -49,6 +50,8 @@ export const Navbar = (props: BoxProps) => {
         top='0'
         borderBottom={1}
         borderStyle={'solid'}
+        justifyContent='center'
+        alignContent='center'
         borderColor={useColorModeValue('gray.200', 'gray.900')}
         align={'center'}
         zIndex='999'
@@ -95,20 +98,18 @@ export const Navbar = (props: BoxProps) => {
           </Flex>
         </Flex>
 
-        <Stack
-          flex={{ base: 1, md: 0 }}
-          justify={'flex-end'}
-          direction={'row'}
-          spacing={6}
-        >
+        <Stack flex={{ base: 1, md: 0 }} direction={'row'} spacing={6}>
           <Box display={{ base: 'none', md: 'inherit' }}>
             {userData?.me ? (
-              <NavbarUserDetails user={userData} />
+              // <NavbarUserDetails user={userData} />
+              <UserDetails userData={userData} />
             ) : (
               <DesktopNavbarUserButtons />
             )}
           </Box>
-          <ThemeToggler />
+          <Box>
+            <ThemeToggler />
+          </Box>
         </Stack>
       </Flex>
 

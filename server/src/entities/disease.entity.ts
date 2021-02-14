@@ -1,5 +1,11 @@
 import { Field, ObjectType } from 'type-graphql';
-import { BaseEntity, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Plant } from './index';
 
 @ObjectType()
@@ -10,11 +16,18 @@ export class Disease extends BaseEntity {
   id!: number;
 
   @Field()
-  name: string;
+  @Column({ nullable: false })
+  name!: string;
 
   @Field()
-  information: string;
+  @Column({ nullable: false })
+  information!: string;
 
-  @OneToMany(() => Plant, (plant) => plant.diseases)
+  @Field(() => String)
+  @Column({ nullable: false })
+  image: string;
+
+  @ManyToOne(() => Plant, (plant) => plant.diseases)
+  // @JoinColumn({ name: 'plant_id' })
   plant: Plant;
 }

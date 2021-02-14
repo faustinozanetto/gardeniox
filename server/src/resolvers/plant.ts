@@ -1,4 +1,12 @@
-import { Resolver, Query, Arg, Mutation, InputType, Field } from 'type-graphql';
+import {
+  Resolver,
+  Query,
+  Arg,
+  Mutation,
+  InputType,
+  Field,
+  Int,
+} from 'type-graphql';
 import { Plant, PlantType } from '../entities/plant.entity';
 import { Disease, Plot } from '../entities';
 import { getConnection, getRepository } from 'typeorm';
@@ -9,10 +17,16 @@ class PlantInput {
   name!: string;
 
   @Field()
+  scientificName!: string;
+
+  @Field()
   variety!: string;
 
   @Field(() => PlantType)
   type!: PlantType;
+
+  @Field(() => String)
+  image!: string;
 
   @Field()
   plot!: string;
@@ -32,7 +46,7 @@ export class PlantResolver {
   }
 
   @Query(() => Plant)
-  plant(@Arg('id') id: number): Promise<Plant | undefined> {
+  plant(@Arg('id', () => Int) id: number): Promise<Plant | undefined> {
     return Plant.findOne(id);
   }
 
@@ -45,20 +59,6 @@ export class PlantResolver {
       seedSprouted: new Date(input.seedSprouted),
       plantedOn: new Date(input.plantedOn),
     }).save();
-
-    // if (!plot) {
-    //   console.log('Plot not found');
-    // }
-    // if (plot) {
-    //   await getConnection()
-    //     .createQueryBuilder()
-    //     .relation(PlotEntity, 'plants')
-    //     .of(plot.id)
-    //     .add(plant.id);
-    // }
-    //@ts-ignore
-    // await Plot.update({ plotId }, { plants: [...plant.plants, plant] });
-
     return plant;
   }
 
@@ -68,20 +68,65 @@ export class PlantResolver {
     return true;
   }
 
+  @Mutation(() => Disease)
+  async addDisease(
+    @Arg('id') id: number,
+    @Arg('diseaseId') diseaseId: number
+  ): Promise<Disease | undefined> {
+    const disease = await Disease.findOne(diseaseId);
+    if (!disease) {
+      console.log('Could not found a disease with the given name!');
+      return;
+    }
+    const plant = await getRepository(Plant).findOne(id, {
+      relations: ['diseases'],
+    });
+    if (!plant) {
+      console.log('Could not found a plant with the given id!');
+      return;
+    }
+    plant.diseases.push(disease);
+    await getConnection().manager.save(plant);
+    return disease;
+  }
+
+  @Query(() => [Disease])
+  async plantDiseases(
+    @Arg('id', () => Int) id: number
+  ): Promise<Disease[] | undefined> {
+    const plant = await getRepository(Plant).findOne(id, {
+      relations: ['diseases'],
+    });
+    if (!plant) {
+      console.log('Could not found a plant with the given id!');
+      return;
+    }
+    return plant?.diseases;
+  }
+
   @Query(() => Boolean)
-  async hasDisease(@Arg('id') id: number, @Arg('name') name: string) {
+  async hasDisease(
+    @Arg('id') id: number,
+    @Arg('name') name: string
+  ): Promise<Boolean> {
     const disease = await Disease.findOne({ where: { name } });
     if (!disease) {
       console.log('Could not found a disease with the given name!');
       return false;
     }
-    const plant = await Plant.findOne(id);
+    const plant = await getRepository(Plant).findOne(id, {
+      relations: ['diseases'],
+    });
     if (!plant) {
       console.log('Could not found a plant with the given id!');
       return false;
     }
-    const plantRepo = getRepository(Plant);
-    const diseases = await plantRepo.find({ relations: ['diseases'] });
-    console.log(diseases);
+    // Looping through diseases and checking if there is one with similar id as input.
+    let foundOne: boolean = false;
+    plant.diseases.map((diseaseI) => {
+      foundOne = diseaseI.id === disease.id;
+    });
+
+    return foundOne;
   }
 }

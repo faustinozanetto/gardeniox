@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChakraProvider, CSSReset } from '@chakra-ui/react';
+import { Box, ChakraProvider, CSSReset } from '@chakra-ui/react';
 import Head from 'next/head';
 import { theme } from '../style';
 
@@ -15,7 +15,9 @@ const App = ({ Component, pageProps }: any) => {
           rel='stylesheet'
         />
       </Head>
-      <Component {...pageProps} />
+      <Box as='main'>
+        <Component {...pageProps} />
+      </Box>
     </ChakraProvider>
   );
 };

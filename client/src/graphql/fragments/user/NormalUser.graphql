@@ -1,4 +1,4 @@
-fragment NormalUser on UserEntity {
+fragment NormalUser on User {
   id
   username
   email

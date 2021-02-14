@@ -1,0 +1,8 @@
+query Disease($id: Int!) {
+  disease(id: $id) {
+    id
+    name
+    information
+    image
+  }
+}

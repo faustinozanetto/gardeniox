@@ -1,0 +1,8 @@
+query plantDiseases($id: Int!) {
+  plantDiseases(id: $id) {
+    id
+    name
+    information
+    image
+  }
+}

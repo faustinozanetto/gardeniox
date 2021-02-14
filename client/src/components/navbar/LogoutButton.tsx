@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Button, ButtonProps, useColorModeValue } from '@chakra-ui/react';
 import { useUserLogoutMutation } from '../../generated/graphql';
+import { FiLogOut } from 'react-icons/fi';
 import { useRouter } from 'next/router';
 
 interface LogoutButtonProps {}
@@ -15,13 +16,11 @@ export const LogoutButton: React.FC<LogoutButtonProps> = (
       <Button
         {...props}
         display={{ md: 'inline-flex' }}
-        fontSize={'sm'}
+        fontSize={'md'}
         fontWeight={600}
         color={'white'}
-        bg={useColorModeValue('red.300', 'red.400')}
-        _hover={{
-          bg: 'red.300',
-        }}
+        variant='ghost'
+        leftIcon={<FiLogOut />}
         onClick={async () => {
           await logout();
           router.reload();

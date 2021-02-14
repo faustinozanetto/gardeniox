@@ -4,23 +4,23 @@ import { Container, Heading } from '@chakra-ui/react';
 import { withUrqlClient } from 'next-urql';
 import { AppLayout } from '../../layout/AppLayout';
 import { createUrqlClient, useGetIntId } from '../../utils';
-import { PlantDetails } from '../../components/plant/PlantDetails';
-import { usePlantQuery } from '../../generated/graphql';
+import { useDiseaseQuery } from '../../generated/graphql';
+import { DiseaseDetails } from '../../components/disease/DiseaseDetails';
 
-const PlantPage = ({}) => {
+const DiseasePage = ({}) => {
   const id = useGetIntId();
-  const [{ data: plantData, error, fetching }] = usePlantQuery({
+  const [{ data: diseaseData, error, fetching }] = useDiseaseQuery({
     pause: id === -1,
     variables: {
       id,
     },
   });
 
-  if (!plantData?.plant) {
+  if (!diseaseData?.disease) {
     if (error) {
       return (
         <AppLayout>
-          <Heading>Could not find plant!</Heading>
+          <Heading>Could not find disease!</Heading>
         </AppLayout>
       );
     }
@@ -28,11 +28,11 @@ const PlantPage = ({}) => {
 
   return (
     <AppLayout>
-      <Container maxW={{ base: '1xl', md: '3xl', lg: '4xl' }}>
-        <PlantDetails plantData={plantData} />
+      <Container maxW={'3xl'}>
+        <DiseaseDetails diseaseData={diseaseData} fetching={fetching} />
       </Container>
     </AppLayout>
   );
 };
 
-export default withUrqlClient(createUrqlClient)(PlantPage);
+export default withUrqlClient(createUrqlClient)(DiseasePage);

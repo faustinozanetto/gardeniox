@@ -18,15 +18,15 @@ import { COOKIE_NAME } from '../constants';
 
 @ObjectType()
 class Users {
-  @Field(() => [UserEntity])
-  foundUsers: UserEntity[];
+  @Field(() => [User])
+  foundUsers: User[];
 }
 
 @Resolver()
 export class UserResolver {
   @Query(() => Users)
   async getUsers(): Promise<Users> {
-    const foundUsers = await UserEntity.find();
+    const foundUsers = await User.find();
     return {
       foundUsers,
     };

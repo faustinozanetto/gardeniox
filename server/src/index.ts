@@ -5,10 +5,13 @@ import Redis from 'ioredis';
 import { ApolloServer } from 'apollo-server-express';
 import { Connection, createConnection } from 'typeorm';
 import { buildSchema } from 'type-graphql';
-import { PlantResolver } from './resolvers/plant';
-import { PlotResolver } from './resolvers/plot';
+import {
+  PlantResolver,
+  DiseaseResolver,
+  PlotResolver,
+  UserResolver,
+} from './resolvers';
 import { getDatabaseOptions } from './utils';
-import { UserResolver } from './resolvers/user';
 import connectRedis from 'connect-redis';
 import session from 'express-session';
 import { COOKIE_NAME, __prod__ } from './constants';
@@ -68,7 +71,7 @@ const main = async () => {
   // Creating apollo server
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver, PlantResolver, PlotResolver],
+      resolvers: [UserResolver, PlantResolver, PlotResolver, DiseaseResolver],
       validate: false,
     }),
     context: ({ req, res }) => ({ req, res, redis }),

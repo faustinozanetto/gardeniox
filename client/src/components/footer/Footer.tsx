@@ -39,7 +39,6 @@ export const Footer = (props: BoxProps) => {
         <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} mb={6} spacing={6}>
           <Flex justify={'center'} align={'center'}>
             <Link href={'/'} passHref>
-              {/* <Icon as={GardenioxLogo} w={{ base: 12 }} h={{ base: 12 }} /> */}
               <Heading
                 mt='6'
                 mb={6}

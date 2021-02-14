@@ -39,22 +39,33 @@ export class Plant extends BaseEntity {
   id!: number;
 
   @Field()
-  @Column({ nullable: true })
+  @Column({ nullable: false })
   name!: string;
 
   @Field()
-  @Column({ nullable: true })
+  @Column({ nullable: false })
+  scientificName!: string;
+
+  @Field()
+  @Column({ nullable: false })
   variety!: string;
 
   @Field(() => PlantType)
-  @Column({ nullable: true })
+  @Column({ nullable: false })
   type: PlantType;
+
+  @Field(() => String)
+  @Column({ nullable: false })
+  image: string;
 
   @ManyToOne(() => Plot, (plot: Plot) => plot.plants)
   @JoinColumn({ name: 'plot_id' })
   plot: Plot;
 
-  @OneToMany(() => Disease, (disease) => disease.plant)
+  @OneToMany(() => Disease, (disease) => disease.plant, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
   diseases: Disease[];
 
   @Field(() => String)

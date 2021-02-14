@@ -1,136 +1,3 @@
-<<<<<<< HEAD
-import React from 'react';
-import { Formik, Form, Field } from 'formik';
-import {
-  Flex,
-  Box,
-  Text,
-  Stack,
-  Button,
-  useToast,
-  FormControl,
-  FormLabel,
-  Select,
-  FormErrorMessage,
-} from '@chakra-ui/react';
-import { InputField, Layout } from '../../components';
-import { PlantType, useCreatePlantMutation } from '../../generated/graphql';
-import { withUrqlClient } from 'next-urql';
-import { createUrqlClient } from '../../utils/createUrqlClient';
-
-const create: React.FC<{}> = ({}) => {
-  const toast = useToast();
-  const [, createPlant] = useCreatePlantMutation();
-  return (
-    <Layout variant='small'>
-      <Formik
-        initialValues={{
-          name: '',
-          variety: '',
-          type: '' as PlantType,
-          plot: '',
-          seedSprouted: '',
-          plantedOn: '',
-        }}
-        onSubmit={async (values) => {
-          // if (values.size === 0 || values.maxPlants === 0) {
-          //   toast({
-          //     title: 'Error',
-          //     description: 'Value can not be lower than one (1)',
-          //     status: 'error',
-          //     duration: 6000,
-          //     isClosable: true,
-          //   });
-          // }
-          const { error } = await createPlant({ input: values });
-          if (error) {
-            console.error(error);
-          }
-        }}
-      >
-        {({ isSubmitting }) => (
-          <Flex>
-            <Box w={500} p={4} my={12} mx='auto'>
-              <Form>
-                <Text
-                  as='h1'
-                  bgGradient='linear(to-r, teal.500,green.500)'
-                  bgClip='text'
-                  fontSize='5xl'
-                  fontWeight='extrabold'
-                  textAlign='center'
-                >
-                  Create Plant
-                </Text>
-                <InputField
-                  type='text'
-                  name='name'
-                  placeholder='Plant Name'
-                  label='Name'
-                />
-                <InputField
-                  type='text'
-                  name='variety'
-                  placeholder='Plant Variety'
-                  label='Variety'
-                />
-                <Field name='type'>
-                  {({ field, form }: any) => (
-                    <FormControl id='type' isRequired>
-                      <FormLabel htmlFor='type'>Plant Type</FormLabel>
-                      <Select
-                        {...field}
-                        id='type'
-                        placeholder='Select Plant Type'
-                      >
-                        {Object.values(PlantType).map((plantType, index) => (
-                          <option key={index}>{plantType}</option>
-                        ))}
-                      </Select>
-                      <FormErrorMessage>{form.errors.name}</FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
-                <InputField
-                  type='text'
-                  name='plot'
-                  placeholder='Plant Plot ID'
-                  label='Plot'
-                />
-                <InputField
-                  type='text'
-                  name='seedSprouted'
-                  placeholder='Seed Sprouted On'
-                  label='Seed Sprouted'
-                />
-                <InputField
-                  type='text'
-                  name='plantedOn'
-                  placeholder='Planted to Soil On'
-                  label='Planted On'
-                />
-                <Stack justify='center' mt={3} isInline spacing={10}>
-                  <Button
-                    mt={4}
-                    minWidth='50%'
-                    colorScheme='green'
-                    isLoading={isSubmitting}
-                    type='submit'
-                  >
-                    Create
-                  </Button>
-                </Stack>
-              </Form>
-            </Box>
-          </Flex>
-        )}
-      </Formik>
-    </Layout>
-  );
-};
-
-export default withUrqlClient(createUrqlClient)(create);
-=======
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import {
@@ -171,8 +38,10 @@ const create: React.FC<{}> = ({}) => {
       <Formik
         initialValues={{
           name: '',
+          scientificName: '',
           variety: '',
           type: '' as PlantType,
+          image: '',
           plot: '',
           seedSprouted: '',
           plantedOn: '',
@@ -213,6 +82,14 @@ const create: React.FC<{}> = ({}) => {
                 />
                 <FormField
                   // validateFieldFn={validateField}
+                  id='scientificName'
+                  name='scientificName'
+                  placeholder='Scientific Name'
+                  label='Scientific Name'
+                  type='text'
+                />
+                <FormField
+                  // validateFieldFn={validateField}
                   id='variety'
                   name='variety'
                   placeholder='Plant Variety'
@@ -236,6 +113,14 @@ const create: React.FC<{}> = ({}) => {
                     </FormControl>
                   )}
                 </Field>
+                <FormField
+                  // validateFieldFn={validateField}
+                  id='image'
+                  name='image'
+                  placeholder='Plant Image'
+                  label='Image'
+                  type='text'
+                />
                 <FormField
                   // validateFieldFn={validateField}
                   id='plot'
@@ -281,4 +166,3 @@ const create: React.FC<{}> = ({}) => {
 };
 
 export default withUrqlClient(createUrqlClient)(create);
->>>>>>> dev
