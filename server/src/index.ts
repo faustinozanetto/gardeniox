@@ -14,7 +14,7 @@ import {
 import { getDatabaseOptions } from './utils';
 import connectRedis from 'connect-redis';
 import session from 'express-session';
-import { COOKIE_NAME, __prod__ } from './constants';
+import { APP_URL, COOKIE_NAME, __prod__ } from './constants';
 
 let connection: Connection;
 
@@ -43,7 +43,7 @@ const main = async () => {
 
   app.use(
     cors({
-      origin: 'http://localhost:3000',
+      origin: APP_URL,
       credentials: true,
     })
   );
