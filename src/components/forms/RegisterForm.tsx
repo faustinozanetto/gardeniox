@@ -28,6 +28,7 @@ export const RegisterForm: React.FC<LoginFormProps> = ({}) => {
           const response = await registerUser({
             variables: { options: values },
           });
+          console.log(response);
           const errors = response.data?.register.errors;
           const user = response.data?.register.user;
           if (errors) {

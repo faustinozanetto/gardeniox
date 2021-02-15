@@ -17,6 +17,7 @@ export const SEO = ({ title, description, keywords, ogUrl }: SEOProps) => {
 
   return (
     <Head>
+      <meta charSet='utf-8' />
       <meta name='description' content={description} />
       <meta name='keywords' content={keywords} />
       <meta http-equiv='X-UA-Compatible' content='IE=edge' />
