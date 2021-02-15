@@ -31,7 +31,7 @@ const CreateSchema = Yup.object().shape({
     .min(2, 'Too Short!')
     .max(100, 'Too Long!')
     .required('Required!'),
-  type: Yup.mixed().oneOf(Object.keys(PlantType)).required('Required!'),
+  type: Yup.string().required('Required!'),
   image: Yup.string()
     .min(2, 'Too Short!')
     .max(100, 'Too Long!')
@@ -48,7 +48,7 @@ const CreateSchema = Yup.object().shape({
 });
 
 export const PlantCreateForm: React.FC<PlantCreateFormProps> = ({}) => {
-  const [createPlant, { loading }] = useCreatePlantMutation();
+  const [createPlant] = useCreatePlantMutation();
   const router = useRouter();
   const toast = useToast();
   return (
@@ -84,7 +84,7 @@ export const PlantCreateForm: React.FC<PlantCreateFormProps> = ({}) => {
           }
         }}
       >
-        {({ errors, isSubmitting }) => (
+        {({ isSubmitting }) => (
           <Form>
             <Text
               as='h1'
