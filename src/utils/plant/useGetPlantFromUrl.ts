@@ -7,7 +7,7 @@ import { useGetIntId } from '../index';
 export const useGetPlantFromUrl = () => {
   const id = useGetIntId();
   return usePlantQuery({
-    pause: id === -1,
+    skip: id === -1,
     variables: {
       id,
     },
