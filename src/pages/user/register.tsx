@@ -1,15 +1,12 @@
 import React from 'react';
 import {
   Box,
-  Text,
   Button,
   Heading,
   SimpleGrid,
   useColorModeValue,
   VisuallyHidden,
 } from '@chakra-ui/react';
-import { createUrqlClient } from '../../utils';
-import { withUrqlClient } from 'next-urql';
 import { FaFacebook, FaGoogle, FaGithub } from 'react-icons/fa';
 import { TextDivider } from '../../components/common/TextDivider';
 import { AppLayout } from '../../layout/AppLayout';
