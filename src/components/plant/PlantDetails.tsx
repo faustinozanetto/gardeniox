@@ -21,7 +21,7 @@ interface PlantDetailsProps {
 }
 
 export const PlantDetails: React.FC<PlantDetailsProps> = ({ plantData }) => {
-  const [{ data: diseasesData, error, fetching }] = usePlantDiseasesQuery({
+  const { data: diseasesData, error, loading } = usePlantDiseasesQuery({
     variables: {
       id: plantData?.plant.id!,
     },
@@ -56,7 +56,7 @@ export const PlantDetails: React.FC<PlantDetailsProps> = ({ plantData }) => {
                 fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}
               >
                 <Text as={'span'} position={'relative'}>
-                  {fetching ? 'Loading...' : plantData?.plant.name}
+                  {loading ? 'Loading...' : plantData?.plant.name}
                 </Text>
               </Heading>
             </Box>
@@ -67,7 +67,7 @@ export const PlantDetails: React.FC<PlantDetailsProps> = ({ plantData }) => {
                 fontSize={{ base: '1xl', sm: '2xl', lg: '3xl' }}
               >
                 <Text as={'span'} position={'relative'}>
-                  {fetching ? 'Loading...' : plantData?.plant.scientificName}
+                  {loading ? 'Loading...' : plantData?.plant.scientificName}
                 </Text>
               </Heading>
             </Box>
