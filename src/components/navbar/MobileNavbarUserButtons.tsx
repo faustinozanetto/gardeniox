@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from '@chakra-ui/react';
+import { VStack, Flex } from '@chakra-ui/react';
 import { RegisterButton } from './RegisterButton';
 import { SignInButton } from './SignInButton';
 
@@ -7,11 +7,14 @@ interface MobileNavbarUserButtons {}
 
 export const MobileNavbarUserButtons: React.FC<MobileNavbarUserButtons> = ({}) => {
   return (
-    <Box d='flex' justifyContent='center' alignContent='center'>
-      {/* @ts-ignore  */}
-      <RegisterButton mr={4} />
-      {/* @ts-ignore  */}
-      <SignInButton ml={4} />
-    </Box>
+    <VStack
+      spacing={4}
+      alignContent='center'
+      justifyContent='center'
+      align='stretch'
+    >
+      <RegisterButton w='100%' />
+      <SignInButton w='100%' />
+    </VStack>
   );
 };

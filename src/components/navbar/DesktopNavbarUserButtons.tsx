@@ -12,6 +12,7 @@ export const DesktopNavbarUserButtons: React.FC<DesktopNavbarUserButtonsProps> =
       justify={'flex-end'}
       direction={'row'}
       spacing={6}
+      mr={4}
     >
       <RegisterButton />
       <SignInButton />

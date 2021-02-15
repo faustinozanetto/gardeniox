@@ -12,7 +12,6 @@ export const RegisterButton: React.FC<RegisterButtonProps> = (
     <Box>
       <Button
         {...props}
-        display={{ md: 'inline-flex' }}
         fontSize={'sm'}
         fontWeight={600}
         color={'white'}

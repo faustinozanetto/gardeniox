@@ -44,7 +44,6 @@ export const Navbar = (props: BoxProps) => {
         color={useColorModeValue('gray.600', 'white')}
         minH={'80px'}
         w={'full'}
-        py={{ base: 2 }}
         px={{ base: 4 }}
         boxShadow={'sm'}
         pos={{ base: 'inherit', md: 'fixed', lg: 'fixed' }}
@@ -64,11 +63,7 @@ export const Navbar = (props: BoxProps) => {
           ),
         }}
       >
-        <Flex
-          flex={{ base: 1, md: 'auto' }}
-          ml={{ base: -2 }}
-          display={{ base: 'flex', md: 'none' }}
-        >
+        <Flex ml={{ base: -2 }} display={{ base: 'flex', md: 'none' }}>
           <IconButton
             onClick={onToggle}
             icon={
@@ -78,7 +73,7 @@ export const Navbar = (props: BoxProps) => {
             aria-label={'Toggle Navigation'}
           />
         </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
+        <Flex flex={1} justify={{ base: 'center', md: 'start' }}>
           <Text
             as={'a'}
             textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
@@ -99,8 +94,8 @@ export const Navbar = (props: BoxProps) => {
           </Flex>
         </Flex>
 
-        <Stack flex={{ base: 1, md: 0 }} direction={'row'} spacing={6}>
-          <Box display={{ base: 'none', md: 'inherit' }}>
+        <Stack direction={'row'} spacing={6}>
+          <Box display={{ base: 'none', md: 'flex' }}>
             {userData?.me ? (
               <UserDetails userData={userData} />
             ) : (
@@ -307,7 +302,7 @@ const NAV_ITEMS: Array<NavItem> = [
       {
         label: 'Create',
         subLabel: 'Create a new plant.',
-        href: '#',
+        href: '/plant/create',
       },
     ],
   },
@@ -316,8 +311,8 @@ const NAV_ITEMS: Array<NavItem> = [
     children: [
       {
         label: 'Create',
-        subLabel: 'Create a new plant.',
-        href: '#',
+        subLabel: 'Create a new plot.',
+        href: '/plot/create',
       },
     ],
   },

@@ -6,6 +6,7 @@ import {
   SimpleGrid,
   useColorModeValue,
   VisuallyHidden,
+  VStack,
 } from '@chakra-ui/react';
 import { FaFacebook, FaGoogle, FaGithub } from 'react-icons/fa';
 import { TextDivider } from '../../components/common/TextDivider';
@@ -18,32 +19,27 @@ interface LoginProps {}
 const RegisterPage: React.FC<LoginProps> = ({}) => {
   return (
     <AppLayout>
-      <Box
-        bg={useColorModeValue('gray.50', 'inherit')}
-        minH='100vh'
-        py='12'
-        px={{ sm: '6', lg: '8' }}
-      >
-        <Box maxW={{ sm: 'md' }} mx={{ sm: 'auto' }} w={{ sm: 'full' }}>
-          <Heading
-            mt='6'
-            mb={6}
-            textAlign='center'
-            size='4xl'
-            fontWeight='bold'
-            bgClip='text'
-            bgGradient='linear(to-l, #7928CA, #FF0080)'
-          >
-            Gardeniox
-          </Heading>
+      <Box bg={useColorModeValue('gray.50', 'inherit')} py={4}>
+        <Box d='flex' flexDir='column' alignContent='center'>
+          <VStack>
+            <Heading
+              mb={4}
+              textAlign='center'
+              size='4xl'
+              fontWeight='bold'
+              bgClip='text'
+              bgGradient='linear(to-l, #7928CA, #FF0080)'
+            >
+              Account
+            </Heading>
+          </VStack>
         </Box>
-        <Box maxW={{ sm: 'md' }} mx={{ sm: 'auto' }} mt='4' w={{ sm: 'full' }}>
+        <Box mt={4} maxW={{ base: '18em', xxs: '20em', xs: '25em' }} mx='auto'>
           <Box
             bg={useColorModeValue('white', 'gray.700')}
-            py='8'
-            px={{ base: '4', md: '10' }}
             shadow='base'
-            rounded={{ sm: 'lg' }}
+            p={4}
+            rounded='lg'
           >
             <RegisterForm />
             <TextDivider mt='6'>or register with</TextDivider>

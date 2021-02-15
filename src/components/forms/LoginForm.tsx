@@ -63,9 +63,12 @@ export const LoginForm: React.FC<LoginFormProps> = ({}) => {
               type='password'
               isRequired
             />
-            <Stack justify='center' mt={6} isInline>
+            <Stack
+              direction={{ base: 'column', sm: 'row', md: 'row' }}
+              justify='center'
+              mt={6}
+            >
               <Button
-                ml={2}
                 w='100%'
                 colorScheme='pink'
                 onClick={() => {
@@ -76,7 +79,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({}) => {
               </Button>
               <Spacer />
               <Button
-                mr={2}
                 w='100%'
                 colorScheme='purple'
                 loadingText='Submitting'

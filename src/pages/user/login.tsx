@@ -4,9 +4,11 @@ import {
   Button,
   Heading,
   SimpleGrid,
+  Stack,
   Text,
   useColorModeValue,
   VisuallyHidden,
+  VStack,
 } from '@chakra-ui/react';
 import { withUrqlClient } from 'next-urql';
 import { FaFacebook, FaGoogle, FaGithub } from 'react-icons/fa';
@@ -21,50 +23,48 @@ interface LoginProps {}
 const LoginPage: React.FC<LoginProps> = ({}) => {
   return (
     <AppLayout>
-      <Box
-        bg={useColorModeValue('gray.50', 'inherit')}
-        minH='100vh'
-        mt='12'
-        py='12'
-        px={{ sm: '6', lg: '8' }}
-      >
-        <Box maxW={{ sm: 'md' }} mx={{ sm: 'auto' }} w={{ sm: 'full' }}>
-          <Heading
-            mt='6'
-            mb={6}
-            textAlign='center'
-            size='4xl'
-            fontWeight='bold'
-            bgClip='text'
-            bgGradient='linear(to-l, #7928CA, #FF0080)'
-          >
-            Gardeniox
-          </Heading>
-          <Heading mt='6' textAlign='center' size='xl' fontWeight='bold'>
-            Sign in to your account
-          </Heading>
-          <Text mt='4' align='center' maxW='md' fontWeight='medium'>
-            <span>Don't have an account?</span>
-            <Box
-              as='a'
-              marginStart='1'
-              href='/user/register'
-              color={useColorModeValue('blue.600', 'blue.200')}
-              fontWeight='medium'
-              _hover={{ color: 'blue.600' }}
-              display={{ base: 'block', sm: 'revert' }}
+      <Box bg={useColorModeValue('gray.50', 'inherit')} py={4}>
+        <Box d='flex' flexDir='column' alignContent='center'>
+          <VStack>
+            <Heading
+              mb={4}
+              textAlign='center'
+              size='4xl'
+              fontWeight='bold'
+              bgClip='text'
+              bgGradient='linear(to-l, #7928CA, #FF0080)'
             >
-              Register One!
-            </Box>
-          </Text>
+              Account
+            </Heading>
+            <Text
+              mt={4}
+              textAlign='center'
+              alignContent='center'
+              justifyContent='center'
+              fontWeight='medium'
+            >
+              <Stack direction={['column', 'row']}>
+                <span>Don't have an account?</span>
+                <Box
+                  as='a'
+                  marginStart='1'
+                  href='/user/register'
+                  color={useColorModeValue('blue.600', 'blue.200')}
+                  fontWeight='medium'
+                  _hover={{ color: 'blue.600' }}
+                >
+                  Register One!
+                </Box>
+              </Stack>
+            </Text>
+          </VStack>
         </Box>
-        <Box maxW={{ sm: 'md' }} mx={{ sm: 'auto' }} mt='4' w={{ sm: 'full' }}>
+        <Box mt={4} maxW={{ base: '18em', xxs: '20em', xs: '25em' }} mx='auto'>
           <Box
             bg={useColorModeValue('white', 'gray.700')}
-            py='8'
-            px={{ base: '4', md: '10' }}
             shadow='base'
-            rounded={{ sm: 'lg' }}
+            p={4}
+            rounded='lg'
           >
             <LoginForm />
             <TextDivider mt='6'>or continue with</TextDivider>
