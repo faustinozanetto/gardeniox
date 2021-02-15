@@ -5,6 +5,7 @@ import { AppLayout } from '../layout/AppLayout';
 import { WhyUseSection } from '../components/homeSection/home/WhyUseSection';
 import { SEO } from '../components/seo/SEO';
 import { HeroSection } from '../components/homeSection/home/HeroSection';
+import { withApollo } from '../utils/apollo/withApollo';
 
 const Home = () => {
   return (
@@ -20,4 +21,4 @@ const Home = () => {
   );
 };
 
-export default withUrqlClient(createUrqlClient, { ssr: true })(Home);
+export default withApollo({ ssr: true })(Home);

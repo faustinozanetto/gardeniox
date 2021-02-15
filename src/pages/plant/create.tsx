@@ -18,6 +18,7 @@ import { PlantType, useCreatePlantMutation } from '../../generated/graphql';
 import { withUrqlClient } from 'next-urql';
 import { createUrqlClient } from '../../utils/createUrqlClient';
 import { AppLayout } from '../../layout/AppLayout';
+import { withApollo } from '../../utils/apollo/withApollo';
 
 {
   /* @ts-ignore  */
@@ -30,9 +31,9 @@ function validateField(value: any) {
   return error;
 }
 
-const create: React.FC<{}> = ({}) => {
+const CreatePlantPage: React.FC<{}> = ({}) => {
   const toast = useToast();
-  const [, createPlant] = useCreatePlantMutation();
+  const [createPlant] = useCreatePlantMutation();
   return (
     <AppLayout>
       <Formik
@@ -48,9 +49,11 @@ const create: React.FC<{}> = ({}) => {
         }}
         onSubmit={async (values, actions) => {
           console.log(values);
-          const { error } = await createPlant({ input: values });
-          if (error) {
-            console.error(error);
+          const { errors } = await createPlant({
+            variables: { input: values },
+          });
+          if (errors) {
+            console.error(errors);
           }
           setTimeout(() => {
             alert(JSON.stringify(values, null, 2));
@@ -165,4 +168,4 @@ const create: React.FC<{}> = ({}) => {
   );
 };
 
-export default withUrqlClient(createUrqlClient)(create);
+export default withApollo({ ssr: false })(CreatePlantPage);

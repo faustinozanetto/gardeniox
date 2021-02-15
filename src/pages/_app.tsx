@@ -1,7 +1,9 @@
 import React from 'react';
 import { Box, ChakraProvider, CSSReset } from '@chakra-ui/react';
 import Head from 'next/head';
+import { ApolloProvider } from '@apollo/client';
 import { theme } from '../style';
+import { withApollo } from '../utils/apollo/withApollo';
 
 const App = ({ Component, pageProps }: any) => {
   return (

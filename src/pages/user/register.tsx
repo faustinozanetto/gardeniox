@@ -14,10 +14,11 @@ import { FaFacebook, FaGoogle, FaGithub } from 'react-icons/fa';
 import { TextDivider } from '../../components/common/TextDivider';
 import { AppLayout } from '../../layout/AppLayout';
 import { RegisterForm } from '../../components/forms/RegisterForm';
+import { withApollo } from '../../utils/apollo/withApollo';
 
 interface LoginProps {}
 
-const Register: React.FC<LoginProps> = ({}) => {
+const RegisterPage: React.FC<LoginProps> = ({}) => {
   return (
     <AppLayout>
       <Box
@@ -70,4 +71,4 @@ const Register: React.FC<LoginProps> = ({}) => {
   );
 };
 
-export default withUrqlClient(createUrqlClient)(Register);
+export default withApollo({ ssr: false })(RegisterPage);

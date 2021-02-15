@@ -6,11 +6,12 @@ import { AppLayout } from '../../layout/AppLayout';
 import { createUrqlClient, useGetIntId } from '../../utils';
 import { useDiseaseQuery } from '../../generated/graphql';
 import { DiseaseDetails } from '../../components/disease/DiseaseDetails';
+import { withApollo } from '../../utils/apollo/withApollo';
 
 const DiseasePage = ({}) => {
   const id = useGetIntId();
-  const [{ data: diseaseData, error, fetching }] = useDiseaseQuery({
-    pause: id === -1,
+  const { data: diseaseData, error, loading } = useDiseaseQuery({
+    skip: id === -1,
     variables: {
       id,
     },
@@ -29,10 +30,10 @@ const DiseasePage = ({}) => {
   return (
     <AppLayout>
       <Container maxW={'3xl'}>
-        <DiseaseDetails diseaseData={diseaseData} fetching={fetching} />
+        <DiseaseDetails diseaseData={diseaseData} fetching={loading} />
       </Container>
     </AppLayout>
   );
 };
 
-export default withUrqlClient(createUrqlClient)(DiseasePage);
+export default withApollo({ ssr: true })(DiseasePage);

@@ -6,11 +6,12 @@ import { AppLayout } from '../../layout/AppLayout';
 import { createUrqlClient, useGetIntId } from '../../utils';
 import { PlantDetails } from '../../components/plant/PlantDetails';
 import { usePlantQuery } from '../../generated/graphql';
+import { withApollo } from '../../utils/apollo/withApollo';
 
 const PlantPage = ({}) => {
   const id = useGetIntId();
-  const [{ data: plantData, error, fetching }] = usePlantQuery({
-    pause: id === -1,
+  const { data: plantData, error, loading } = usePlantQuery({
+    skip: id === -1,
     variables: {
       id,
     },
@@ -35,4 +36,4 @@ const PlantPage = ({}) => {
   );
 };
 
-export default withUrqlClient(createUrqlClient)(PlantPage);
+export default withApollo({ ssr: true })(PlantPage);

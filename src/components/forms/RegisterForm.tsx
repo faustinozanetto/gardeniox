@@ -17,7 +17,7 @@ import { FormField } from './FormField';
 interface LoginFormProps {}
 
 export const RegisterForm: React.FC<LoginFormProps> = ({}) => {
-  const [, registerUser] = useRegisterUserMutation();
+  const [registerUser] = useRegisterUserMutation();
   const router = useRouter();
   const toast = useToast();
   return (
@@ -25,7 +25,9 @@ export const RegisterForm: React.FC<LoginFormProps> = ({}) => {
       <Formik
         initialValues={{ email: '', username: '', password: '' }}
         onSubmit={async (values, { setErrors }) => {
-          const response = await registerUser({ options: values });
+          const response = await registerUser({
+            variables: { options: values },
+          });
           const errors = response.data?.register.errors;
           const user = response.data?.register.user;
           if (errors) {

@@ -29,10 +29,13 @@ import { NavbarUserDetails } from './NavbarUserDetails';
 import { DesktopNavbarUserButtons } from './DesktopNavbarUserButtons';
 import { MobileNavbarUserButtons } from './MobileNavbarUserButtons';
 import { UserDetails } from './UserDetails';
+import { isServer } from '../../utils';
 
 export const Navbar = (props: BoxProps) => {
   const { isOpen, onToggle } = useDisclosure();
-  const [{ data: userData }] = useMeQuery();
+  const { data: userData, loading } = useMeQuery({
+    skip: isServer(),
+  });
   const router = useRouter();
 
   return (

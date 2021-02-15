@@ -6,10 +6,11 @@ import { useCreatePlotMutation } from '../../generated/graphql';
 import { withUrqlClient } from 'next-urql';
 import { createUrqlClient } from '../../utils/createUrqlClient';
 import { AppLayout } from '../../layout/AppLayout';
+import { withApollo } from '../../utils/apollo/withApollo';
 
-const create: React.FC<{}> = ({}) => {
+const PlotCreatePage: React.FC<{}> = ({}) => {
   const toast = useToast();
-  const [, createPlot] = useCreatePlotMutation();
+  const [createPlot] = useCreatePlotMutation();
   return (
     <AppLayout>
       <Formik
@@ -24,9 +25,9 @@ const create: React.FC<{}> = ({}) => {
               isClosable: true,
             });
           }
-          const { error } = await createPlot({ input: values });
-          if (error) {
-            console.error(error);
+          const { errors } = await createPlot({ variables: { input: values } });
+          if (errors) {
+            console.error(errors);
           }
         }}
       >
@@ -76,4 +77,4 @@ const create: React.FC<{}> = ({}) => {
   );
 };
 
-export default withUrqlClient(createUrqlClient)(create);
+export default withApollo({ ssr: false })(PlotCreatePage);

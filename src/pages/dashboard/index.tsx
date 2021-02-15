@@ -7,7 +7,7 @@ import { createUrqlClient } from '../../utils';
 
 interface indexProps {}
 
-const Dashboard: React.FC<indexProps> = ({}) => {
+const DashboardPage: React.FC<indexProps> = ({}) => {
   return (
     <AppLayout>
       <Container maxW={'3xl'}>
@@ -21,4 +21,4 @@ const Dashboard: React.FC<indexProps> = ({}) => {
   );
 };
 
-export default withUrqlClient(createUrqlClient)(Dashboard);
+export default DashboardPage;

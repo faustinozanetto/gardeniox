@@ -14,10 +14,11 @@ import { createUrqlClient } from '../../utils';
 import { AppLayout } from '../../layout/AppLayout';
 import { LoginForm } from '../../components/forms/LoginForm';
 import { TextDivider } from '../../components/common/TextDivider';
+import { withApollo } from '../../utils/apollo/withApollo';
 
 interface LoginProps {}
 
-const Login: React.FC<LoginProps> = ({}) => {
+const LoginPage: React.FC<LoginProps> = ({}) => {
   return (
     <AppLayout>
       <Box
@@ -88,4 +89,4 @@ const Login: React.FC<LoginProps> = ({}) => {
   );
 };
 
-export default withUrqlClient(createUrqlClient)(Login);
+export default withApollo({ ssr: false })(LoginPage);
