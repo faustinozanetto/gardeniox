@@ -1,10 +1,9 @@
 import React from 'react';
-import { withUrqlClient } from 'next-urql';
-import { createUrqlClient } from '../utils';
 import { AppLayout } from '../layout/AppLayout';
 import { WhyUseSection } from '../components/homeSection/home/WhyUseSection';
 import { SEO } from '../components/seo/SEO';
 import { HeroSection } from '../components/homeSection/home/HeroSection';
+import { withApollo } from '../utils/apollo/withApollo';
 
 const Home = () => {
   return (
@@ -20,4 +19,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default withApollo({ ssr: true })(Home);

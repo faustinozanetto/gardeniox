@@ -10,8 +10,9 @@ import {
   Center,
 } from '@chakra-ui/react';
 import { AppLayout } from '../layout/AppLayout';
+import { withApollo } from '../utils/apollo/withApollo';
 
-export default function NotFound() {
+const NotFound = () => {
   return (
     <AppLayout>
       <Box w='full' mx='auto' maxW='3xl' px={{ base: '6', md: '8' }}>
@@ -27,4 +28,6 @@ export default function NotFound() {
       </Box>
     </AppLayout>
   );
-}
+};
+
+export default withApollo({ ssr: false })(NotFound);

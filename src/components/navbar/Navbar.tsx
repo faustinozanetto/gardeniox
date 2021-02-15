@@ -23,7 +23,6 @@ import {
   ChevronRightIcon,
 } from '@chakra-ui/icons';
 import { ThemeToggler } from './ThemeToggler';
-import { useRouter } from 'next/router';
 import { MeQuery, useMeQuery } from '../../generated/graphql';
 import { NavbarUserDetails } from './NavbarUserDetails';
 import { DesktopNavbarUserButtons } from './DesktopNavbarUserButtons';
@@ -33,10 +32,9 @@ import { isServer } from '../../utils';
 
 export const Navbar = (props: BoxProps) => {
   const { isOpen, onToggle } = useDisclosure();
-  const { data: userData, loading } = useMeQuery({
+  const { data: userData } = useMeQuery({
     skip: isServer(),
   });
-  const router = useRouter();
 
   return (
     <Box pb={{ base: 4, sm: 8 }} {...props}>
@@ -104,7 +102,6 @@ export const Navbar = (props: BoxProps) => {
         <Stack flex={{ base: 1, md: 0 }} direction={'row'} spacing={6}>
           <Box display={{ base: 'none', md: 'inherit' }}>
             {userData?.me ? (
-              // <NavbarUserDetails user={userData} />
               <UserDetails userData={userData} />
             ) : (
               <DesktopNavbarUserButtons />

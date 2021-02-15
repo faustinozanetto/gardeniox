@@ -4,6 +4,7 @@ import { withUrqlClient } from 'next-urql';
 import { PlantCard } from '../../components/cards/PlantCard';
 import { AppLayout } from '../../layout/AppLayout';
 import { createUrqlClient } from '../../utils';
+import { withApollo } from '../../utils/apollo/withApollo';
 
 interface indexProps {}
 
@@ -21,4 +22,4 @@ const DashboardPage: React.FC<indexProps> = ({}) => {
   );
 };
 
-export default DashboardPage;
+export default withApollo({ ssr: true })(DashboardPage);
