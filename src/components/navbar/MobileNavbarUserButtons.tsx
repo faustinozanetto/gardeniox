@@ -13,7 +13,9 @@ export const MobileNavbarUserButtons: React.FC<MobileNavbarUserButtons> = ({}) =
       justifyContent='center'
       align='stretch'
     >
+      {/* @ts-ignore */}
       <RegisterButton w='100%' />
+      {/* @ts-ignore */}
       <SignInButton w='100%' />
     </VStack>
   );
