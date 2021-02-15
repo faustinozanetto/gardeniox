@@ -10,7 +10,7 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
   return {
     url:
       process.env.NODE_ENV === 'production'
-        ? 'https://gardeniox-server.herokuapp.com'
+        ? 'https://gardeniox-server.herokuapp.com/graphql'
         : 'http://localhost:4000/graphql',
     fetchOptions: {
       credentials: 'include' as const,
