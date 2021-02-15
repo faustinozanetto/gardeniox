@@ -67,7 +67,7 @@ export const PlantCreateForm: React.FC<PlantCreateFormProps> = ({}) => {
         validationSchema={CreateSchema}
         onSubmit={async (values) => {
           const { data, errors } = await createPlant({
-            variables: { input: values },
+            variables: { input: { ...values, plot: String(values.plot) } },
           });
           if (errors) {
             console.error(errors);
