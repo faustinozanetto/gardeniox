@@ -21,13 +21,7 @@ interface PlantCardProps {
 export const PlantCard: React.FC<PlantCardProps> = ({ plantData }) => {
   const router = useRouter();
   return (
-    <Center
-      py={12}
-      _hover={{
-        transition: 'transform .3s ease-in-out',
-        transform: 'scale(1.15)',
-      }}
-    >
+    <Center py={12}>
       <Box
         role={'group'}
         p={6}

@@ -14,6 +14,7 @@ import { GiSprout } from 'react-icons/gi';
 import { IoWater } from 'react-icons/io5';
 import { capitalize } from '../../../utils/common';
 import { PlantRequirementExplication } from './PlantRequirementExplication';
+import { motion } from 'framer-motion';
 
 interface PlantRequirementProps {
   amount: number;
@@ -60,40 +61,47 @@ export const PlantRequirement: React.FC<PlantRequirementProps> = ({
   };
 
   return (
-    <Box
-      p={5}
-      shadow='md'
-      borderRadius='xl'
-      bgColor={useColorModeValue('gray.100', 'gray.800')}
-      onClick={() => {
-        onOpen();
+    <motion.div
+      whileHover={{
+        scale: 1.1,
+        borderRadius: '100%',
       }}
     >
-      <VStack>
-        <Heading fontSize='md' fontWeight='500'>
-          {capitalizedType} Requirement
-        </Heading>
-        <HStack>
-          {[...Array(5)].map((_value: any, index: number) => {
-            return (
-              <Icon
-                as={getIconType()}
-                w={6}
-                h={6}
-                key={index}
-                color={
-                  index <= amount - 1 ? `${getIconColor()}.400` : 'gray.600'
-                }
-              />
-            );
-          })}
-        </HStack>
-      </VStack>
-      <PlantRequirementExplication
-        isOpen={isOpen}
-        onOpen={onOpen}
-        onClose={onClose}
-      />
-    </Box>
+      <Box
+        p={5}
+        shadow='md'
+        borderRadius='xl'
+        bgColor={useColorModeValue('gray.100', 'gray.800')}
+        onClick={() => {
+          onOpen();
+        }}
+      >
+        <VStack>
+          <Heading fontSize='md' fontWeight='500'>
+            {capitalizedType} Requirement
+          </Heading>
+          <HStack>
+            {[...Array(5)].map((_value: any, index: number) => {
+              return (
+                <Icon
+                  as={getIconType()}
+                  w={6}
+                  h={6}
+                  key={index}
+                  color={
+                    index <= amount - 1 ? `${getIconColor()}.400` : 'gray.600'
+                  }
+                />
+              );
+            })}
+          </HStack>
+        </VStack>
+        <PlantRequirementExplication
+          isOpen={isOpen}
+          onOpen={onOpen}
+          onClose={onClose}
+        />
+      </Box>
+    </motion.div>
   );
 };

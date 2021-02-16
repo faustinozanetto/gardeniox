@@ -19,7 +19,10 @@ interface LoginProps {}
 const RegisterPage: React.FC<LoginProps> = ({}) => {
   return (
     <AppLayout>
-      <Box bg={useColorModeValue('gray.50', 'inherit')} py={4}>
+      <Box
+        bg={useColorModeValue('gray.50', 'inherit')}
+        px={{ sm: '6', lg: '8' }}
+      >
         <Box d='flex' flexDir='column' alignContent='center'>
           <VStack>
             <Heading

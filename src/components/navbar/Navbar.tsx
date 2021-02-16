@@ -37,7 +37,7 @@ export const Navbar = (props: BoxProps) => {
   });
 
   return (
-    <Box pb={{ base: 4, sm: 8 }} {...props}>
+    <Box {...props}>
       <Flex
         as='header'
         bg={useColorModeValue('white', 'gray.800')}

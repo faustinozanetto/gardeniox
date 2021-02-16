@@ -1,3 +1,4 @@
+import { Box, useColorModeValue } from '@chakra-ui/react';
 import React, { ReactNode } from 'react';
 import { Footer, Navbar } from '../components';
 
@@ -8,9 +9,15 @@ interface AppLayoutProps {
 export const AppLayout = ({ children }: AppLayoutProps) => {
   return (
     <>
-      <Navbar mb={{ base: 5, md: 20 }} />
-      {children}
-      <Footer mt={12} />
+      <Navbar />
+      <Box
+        bg={useColorModeValue('gray.50', 'inherit')}
+        minHeight='100vh'
+        pt={{ base: '3em', md: '7em' }}
+      >
+        {children}
+      </Box>
+      <Footer />
     </>
   );
 };

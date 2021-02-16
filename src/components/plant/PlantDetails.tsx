@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Flex,
   useColorModeValue,
@@ -22,11 +22,12 @@ interface PlantDetailsProps {
 }
 
 export const PlantDetails: React.FC<PlantDetailsProps> = ({ plantData }) => {
-  const { data: diseasesData, loading } = usePlantDiseasesQuery({
+  const { data: diseasesData } = usePlantDiseasesQuery({
     variables: {
       id: plantData?.plant.id!,
     },
   });
+
   return (
     <Flex
       justifyContent='center'
@@ -53,7 +54,7 @@ export const PlantDetails: React.FC<PlantDetailsProps> = ({ plantData }) => {
         <Box>
           <Stack>
             <Box>
-              <Skeleton isLoaded={!loading}>
+              <Skeleton isLoaded={plantData !== undefined}>
                 <Heading
                   lineHeight={1.1}
                   fontWeight={600}
@@ -66,7 +67,7 @@ export const PlantDetails: React.FC<PlantDetailsProps> = ({ plantData }) => {
               </Skeleton>
             </Box>
             <Box>
-              <Skeleton isLoaded={!loading}>
+              <Skeleton isLoaded={plantData !== undefined}>
                 <Heading
                   lineHeight={1.1}
                   fontWeight={300}
@@ -88,7 +89,7 @@ export const PlantDetails: React.FC<PlantDetailsProps> = ({ plantData }) => {
                 {diseasesData?.plantDiseases.length !== 0 ? (
                   <Box as={Stack}>
                     {diseasesData?.plantDiseases.map((disease, index) => (
-                      <Skeleton isLoaded={!loading}>
+                      <Skeleton isLoaded={plantData !== undefined}>
                         <PlantDisease key={index} diseaseData={disease} />
                       </Skeleton>
                     ))}
@@ -119,7 +120,7 @@ export const PlantDetails: React.FC<PlantDetailsProps> = ({ plantData }) => {
                 {diseasesData?.plantDiseases.length !== 0 ? (
                   <Box as={Stack}>
                     {diseasesData?.plantDiseases.map((disease, index) => (
-                      <Skeleton isLoaded={!loading}>
+                      <Skeleton isLoaded={plantData !== undefined}>
                         <PlantDisease key={index} diseaseData={disease} />
                       </Skeleton>
                     ))}

@@ -18,7 +18,7 @@
     "@urql/exchange-graphcache": "^3.4.0",
     "compression-webpack-plugin": "^7.1.2",
     "formik": "^2.2.6",
-    "framer-motion": "^3.2.2-rc.1",
+    "framer-motion": "^3.3.0",
     "graphql": "^15.5.0",
     "next": "10.0.6",
     "next-apollo": "^5.0.4",

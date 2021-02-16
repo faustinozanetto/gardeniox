@@ -33,11 +33,10 @@ export const Footer = (props: BoxProps) => {
       bg={useColorModeValue('gray.100', 'gray.900')}
       color={useColorModeValue('gray.600', 'gray.500')}
       py={{ base: 4, sm: 8 }}
-      bottom={0}
       {...props}
     >
       <Container maxW={'7xl'}>
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} mb={6} spacing={6}>
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} pb={8} spacing={6}>
           <Flex justify={'center'} align={'center'}>
             <Text
               as={'a'}

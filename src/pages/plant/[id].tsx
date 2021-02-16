@@ -1,9 +1,7 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 import { Container, Heading } from '@chakra-ui/react';
-import { withUrqlClient } from 'next-urql';
 import { AppLayout } from '../../layout/AppLayout';
-import { createUrqlClient, useGetIntId } from '../../utils';
+import { useGetIntId } from '../../utils';
 import { PlantDetails } from '../../components/plant/PlantDetails';
 import { usePlantQuery } from '../../generated/graphql';
 import { withApollo } from '../../utils/apollo/withApollo';
@@ -16,6 +14,14 @@ const PlantPage = ({}) => {
       id,
     },
   });
+
+  if (loading) {
+    return (
+      <AppLayout>
+        <Heading>Loading data ...</Heading>
+      </AppLayout>
+    );
+  }
 
   if (!plantData?.plant) {
     if (error) {

@@ -23,7 +23,10 @@ interface LoginProps {}
 const LoginPage: React.FC<LoginProps> = ({}) => {
   return (
     <AppLayout>
-      <Box bg={useColorModeValue('gray.50', 'inherit')} py={4}>
+      <Box
+        bg={useColorModeValue('gray.50', 'inherit')}
+        px={{ sm: '6', lg: '8' }}
+      >
         <Box d='flex' flexDir='column' alignContent='center'>
           <VStack>
             <Heading
@@ -44,7 +47,7 @@ const LoginPage: React.FC<LoginProps> = ({}) => {
               fontWeight='medium'
             >
               <Stack direction={['column', 'row']}>
-                <span>Don't have an account?</span>
+                <Text>Don't have an account?</Text>
                 <Box
                   as='a'
                   marginStart='1'

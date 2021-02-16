@@ -7,7 +7,12 @@ import { PlantCreateForm } from '../../components/forms/plant/PlantCreateForm';
 const CreatePlantPage: React.FC<{}> = ({}) => {
   return (
     <AppLayout>
-      <Box bg={useColorModeValue('gray.50', 'inherit')} py={4}>
+      <Box
+        bg={useColorModeValue('gray.50', 'inherit')}
+        minH='100vh'
+        py='12'
+        px={{ sm: '6', lg: '8' }}
+      >
         <Box d='flex' flexDir='column' alignContent='center'>
           <VStack>
             <Heading
@@ -22,7 +27,7 @@ const CreatePlantPage: React.FC<{}> = ({}) => {
             </Heading>
           </VStack>
         </Box>
-        <Box mt={4} maxW={{ base: '18em', xxs: '20em', xs: '25em' }} mx='auto'>
+        <Box mt={4} maxW={{ base: '18em', xxs: '20em', xs: '30em' }} mx='auto'>
           <Box
             bg={useColorModeValue('white', 'gray.700')}
             shadow='base'
