@@ -1,0 +1,12 @@
+fragment PlantSnippet on Plant {
+  id
+  name
+  scientificName
+  variety
+  type
+  image
+  seedSprouted
+  plantedOn
+  createdAt
+  updatedAt
+}

@@ -1,0 +1,8 @@
+query Plants($limit: Int!, $cursor: String) {
+  plants(limit: $limit, cursor: $cursor) {
+    hasMore
+    plants {
+      ...PlantSnippet
+    }
+  }
+}

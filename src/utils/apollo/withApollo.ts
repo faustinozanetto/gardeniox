@@ -1,11 +1,14 @@
 import { createWithApollo } from './createWithApollo';
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { NextPageContext } from 'next';
+import { PaginatedPlants } from '../../generated/graphql';
 
 const createClient = (ctx: NextPageContext) =>
   new ApolloClient({
-    uri: 'https://gardeniox-server.herokuapp.com/graphql',
-    // uri: process.env.NEXT_PUBLIC_API_URL as string,
+    uri:
+      process.env.NODE_ENV === 'production'
+        ? 'https://gardeniox-server.herokuapp.com/graphql'
+        : 'http://localhost:4000/graphql',
     credentials: 'include',
     headers: {
       cookie:
@@ -13,7 +16,26 @@ const createClient = (ctx: NextPageContext) =>
           ? ctx?.req?.headers.cookie
           : undefined) || '',
     },
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      typePolicies: {
+        Query: {
+          fields: {
+            plants: {
+              keyArgs: [],
+              merge(
+                existing: PaginatedPlants | undefined,
+                incoming: PaginatedPlants
+              ): PaginatedPlants {
+                return {
+                  ...incoming,
+                  plants: [...(existing?.plants || []), ...incoming.plants],
+                };
+              },
+            },
+          },
+        },
+      },
+    }),
   });
 
 export const withApollo = createWithApollo(createClient);

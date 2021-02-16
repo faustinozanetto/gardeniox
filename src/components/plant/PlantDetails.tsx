@@ -10,6 +10,8 @@ import {
   VStack,
   StackDivider,
   SimpleGrid,
+  Skeleton,
+  SkeletonCircle,
 } from '@chakra-ui/react';
 import { PlantDisease } from './PlantDisease';
 import { PlantQuery, usePlantDiseasesQuery } from '../../generated/graphql';
@@ -50,41 +52,53 @@ export const PlantDetails: React.FC<PlantDetailsProps> = ({ plantData }) => {
         <Box>
           <Stack>
             <Box>
-              <Heading
-                lineHeight={1.1}
-                fontWeight={600}
-                fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}
-              >
-                <Text as={'span'} position={'relative'}>
-                  {loading ? 'Loading...' : plantData?.plant.name}
-                </Text>
-              </Heading>
+              <Skeleton isLoaded={!loading}>
+                <Heading
+                  lineHeight={1.1}
+                  fontWeight={600}
+                  fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}
+                >
+                  <Text as={'span'} position={'relative'}>
+                    {plantData?.plant.name}
+                  </Text>
+                </Heading>
+              </Skeleton>
             </Box>
             <Box>
-              <Heading
-                lineHeight={1.1}
-                fontWeight={300}
-                fontSize={{ base: '1xl', sm: '2xl', lg: '3xl' }}
-              >
-                <Text as={'span'} position={'relative'}>
-                  {loading ? 'Loading...' : plantData?.plant.scientificName}
-                </Text>
-              </Heading>
+              <Skeleton isLoaded={!loading}>
+                <Heading
+                  lineHeight={1.1}
+                  fontWeight={300}
+                  fontSize={{ base: '1xl', sm: '2xl', lg: '3xl' }}
+                >
+                  <Text as={'span'} position={'relative'}>
+                    {plantData?.plant.scientificName}
+                  </Text>
+                </Heading>
+              </Skeleton>
             </Box>
           </Stack>
         </Box>
         <Flex display={{ base: 'none', md: 'none', lg: 'flex', xl: 'flex' }}>
           <Stack p={4} divider={<StackDivider borderColor='gray.200' />}>
-            <Box d='flex'>
-              <VStack w='50%' p={2}>
+            <SimpleGrid columns={2}>
+              <VStack p={2}>
                 <Heading>Diseases</Heading>
-                <Box as={Stack}>
-                  {diseasesData?.plantDiseases.map((disease, index) => (
-                    <PlantDisease key={index} diseaseData={disease} />
-                  ))}
-                </Box>
+                {diseasesData?.plantDiseases.length !== 0 ? (
+                  <Box as={Stack}>
+                    {diseasesData?.plantDiseases.map((disease, index) => (
+                      <Skeleton isLoaded={!loading}>
+                        <PlantDisease key={index} diseaseData={disease} />
+                      </Skeleton>
+                    ))}
+                  </Box>
+                ) : (
+                  <Heading fontSize='2xl' fontWeight='500'>
+                    No diseases were found.
+                  </Heading>
+                )}
               </VStack>
-              <VStack w='50%' p={2}>
+              <VStack p={2}>
                 <Heading>Information</Heading>
                 <SimpleGrid columns={{ smd: 2, md: 2 }} spacing={4}>
                   <PlantRequirement type='water' amount={3} />
@@ -93,7 +107,7 @@ export const PlantDetails: React.FC<PlantDetailsProps> = ({ plantData }) => {
                   <GrowsOn />
                 </SimpleGrid>
               </VStack>
-            </Box>
+            </SimpleGrid>
           </Stack>
         </Flex>
         <Flex display={{ base: 'flex', md: 'flex', lg: 'none', xl: 'none' }}>
@@ -101,11 +115,19 @@ export const PlantDetails: React.FC<PlantDetailsProps> = ({ plantData }) => {
             <Box>
               <VStack p={2}>
                 <Heading>Diseases</Heading>
-                <Box as={Stack}>
-                  {diseasesData?.plantDiseases.map((disease, index) => (
-                    <PlantDisease key={index} diseaseData={disease} />
-                  ))}
-                </Box>
+                {diseasesData?.plantDiseases.length !== 0 ? (
+                  <Box as={Stack}>
+                    {diseasesData?.plantDiseases.map((disease, index) => (
+                      <Skeleton isLoaded={!loading}>
+                        <PlantDisease key={index} diseaseData={disease} />
+                      </Skeleton>
+                    ))}
+                  </Box>
+                ) : (
+                  <Heading fontSize='2xl' fontWeight='500'>
+                    No diseases were found.
+                  </Heading>
+                )}
               </VStack>
               <VStack p={2}>
                 <Heading>Information</Heading>

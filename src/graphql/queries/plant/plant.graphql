@@ -8,5 +8,7 @@ query Plant($id: Int!) {
     image
     seedSprouted
     plantedOn
+    createdAt
+    updatedAt
   }
 }

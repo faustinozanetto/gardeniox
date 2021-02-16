@@ -8,13 +8,18 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
+import { PlantSnippetFragment } from '../../generated/graphql';
+import { useRouter } from 'next/router';
 
 const IMAGE =
   'https://media.architecturaldigest.com/photos/5efb7da66d18ec1650bd30a7/master/w_1000,h_1250,c_limit/Corn-Plant-LArge-2.jpg';
 
-interface PlantCardProps {}
+interface PlantCardProps {
+  plantData?: PlantSnippetFragment;
+}
 
-export const PlantCard: React.FC<PlantCardProps> = ({}) => {
+export const PlantCard: React.FC<PlantCardProps> = ({ plantData }) => {
+  const router = useRouter();
   return (
     <Center
       py={12}
@@ -33,24 +38,15 @@ export const PlantCard: React.FC<PlantCardProps> = ({}) => {
         rounded={'lg'}
         pos={'relative'}
         zIndex={1}
+        onClick={() => {
+          router.push(`/plant/${plantData?.id}`);
+        }}
       >
         <Box
           rounded={'lg'}
           mt={-12}
           pos={'relative'}
           height={'230px'}
-          _after={{
-            transition: 'all .3s ease',
-            content: '""',
-            w: 'full',
-            h: 'full',
-            pos: 'absolute',
-            top: 5,
-            left: 0,
-            backgroundImage: `url(${IMAGE})`,
-            filter: 'blur(15px)',
-            zIndex: -1,
-          }}
           _groupHover={{
             _after: {
               filter: 'blur(20px)',
@@ -62,7 +58,7 @@ export const PlantCard: React.FC<PlantCardProps> = ({}) => {
             height={230}
             width={282}
             objectFit={'cover'}
-            src={IMAGE}
+            src={plantData?.image}
           />
         </Box>
         <Stack pt={10} align={'center'}>
@@ -70,11 +66,11 @@ export const PlantCard: React.FC<PlantCardProps> = ({}) => {
             Plant
           </Text>
           <Heading fontSize={'2xl'} fontFamily={'body'} fontWeight={500}>
-            Dracaena
+            {plantData?.name}
           </Heading>
           <Stack direction={'row'} align={'center'}>
             <Text fontWeight={600} fontSize={'md'}>
-              Dracaena Massangeana
+              {plantData?.scientificName}
             </Text>
           </Stack>
         </Stack>
