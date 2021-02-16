@@ -81,7 +81,6 @@ export const Navbar = (props: BoxProps) => {
             color={useColorModeValue('gray.800', 'white')}
             fontSize='3xl'
             fontWeight='bold'
-            size='4xl'
             href='/'
             bgClip='text'
             bgGradient='linear(to-l, #7928CA, #FF0080)'

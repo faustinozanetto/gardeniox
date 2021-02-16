@@ -32,33 +32,35 @@ export const Footer = (props: BoxProps) => {
     <Box
       bg={useColorModeValue('gray.100', 'gray.900')}
       color={useColorModeValue('gray.600', 'gray.500')}
-      // py={{ base: 4, sm: 8 }}
+      py={{ base: 4, sm: 8 }}
+      bottom={0}
       {...props}
     >
       <Container maxW={'7xl'}>
         <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} mb={6} spacing={6}>
           <Flex justify={'center'} align={'center'}>
-            <Link href={'/'} passHref>
-              <Heading
-                mt='6'
-                mb={6}
-                textAlign='center'
-                size='3xl'
-                fontWeight='bold'
-                bgClip='text'
-                bgGradient='linear(to-l, #7928CA, #FF0080)'
-              >
-                Gardeniox
-              </Heading>
-            </Link>
+            <Text
+              as={'a'}
+              fontFamily={'heading'}
+              color={useColorModeValue('gray.800', 'white')}
+              fontSize='5xl'
+              fontWeight='bold'
+              href='/'
+              bgClip='text'
+              bgGradient='linear(to-l, #7928CA, #FF0080)'
+            >
+              Gardeniox
+            </Text>
           </Flex>
           <Stack spacing={4}>
             <Text fontFamily={'heading'} fontSize={'lg'} fontWeight='bold'>
               Social
             </Text>
             <Stack align={'start'}>
-              {SOCIAL_LINKS.map((link) => (
-                <Link href={link.href}>{link.label}</Link>
+              {SOCIAL_LINKS.map((link, index) => (
+                <Link key={index} href={link.href}>
+                  {link.label}
+                </Link>
               ))}
             </Stack>
           </Stack>
@@ -67,8 +69,10 @@ export const Footer = (props: BoxProps) => {
               Social
             </Text>
             <Stack align={'start'}>
-              {SOCIAL_LINKS.map((link) => (
-                <Link href={link.href}>{link.label}</Link>
+              {SOCIAL_LINKS.map((link, index) => (
+                <Link key={index} href={link.href}>
+                  {link.label}
+                </Link>
               ))}
             </Stack>
           </Stack>
