@@ -46,7 +46,9 @@ export const PlantDetails: React.FC<PlantDetailsProps> = ({ plantData }) => {
           <Image
             objectFit='cover'
             borderRadius='full'
-            boxSize={{ base: '200px', md: '250px', xl: '350px' }}
+            // boxSize={{ base: '200px', md: '250px', xl: '350px' }}
+            width={{ base: '200px', md: '250px', xl: '350px' }}
+            height={{ base: '200px', md: '250px', xl: '350px' }}
             src={plantData?.plant?.image}
             alt={plantData?.plant.name}
           />

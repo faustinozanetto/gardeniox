@@ -35,7 +35,10 @@ const PlantPage = ({}) => {
 
   return (
     <AppLayout>
-      <Container maxW={{ base: '1xl', md: '3xl', lg: '4xl' }}>
+      <Container
+        maxW={{ base: '1xl', md: '3xl', lg: '4xl' }}
+        my={{ base: '1em', md: '4em'  }}
+      >
         <PlantDetails plantData={plantData} />
       </Container>
     </AppLayout>

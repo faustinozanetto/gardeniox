@@ -13,7 +13,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
       <Box
         bg={useColorModeValue('gray.50', 'inherit')}
         minHeight='100vh'
-        pt={{ base: '3em', md: '7em' }}
+        py={{ base: '3em', md: '7em' }}
       >
         {children}
       </Box>

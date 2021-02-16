@@ -1,10 +1,12 @@
 import React from 'react';
 import {
+  Box,
   Button,
   Container,
   Heading,
   SimpleGrid,
   Stack,
+  VStack,
 } from '@chakra-ui/react';
 import { PlantCard } from '../../components/cards/PlantCard';
 import { AppLayout } from '../../layout/AppLayout';
@@ -17,7 +19,7 @@ interface indexProps {}
 const DashboardPage: React.FC<indexProps> = ({}) => {
   const { data, loading, fetchMore, variables } = usePlantsQuery({
     variables: {
-      limit: 15,
+      limit: 9,
       cursor: null,
     },
     notifyOnNetworkStatusChange: true,
@@ -44,7 +46,7 @@ const DashboardPage: React.FC<indexProps> = ({}) => {
 
   return (
     <AppLayout>
-      <Container maxW={'3xl'}>
+      <Container maxW={'8xl'}>
         <Stack>
           <Heading
             mb={4}
@@ -57,41 +59,46 @@ const DashboardPage: React.FC<indexProps> = ({}) => {
             Plants
           </Heading>
           <motion.div variants={grid} initial='hidden' animate='visible'>
-            <SimpleGrid minChildWidth='300px' gap={6}>
-              {data?.plants.plants.map((plant, index) =>
-                !plant ? null : (
-                  <motion.div
-                    key={index}
-                    variants={item}
-                    whileHover={{
-                      scale: 1.1,
-                      borderRadius: '100%',
-                    }}
-                  >
-                    <PlantCard plantData={plant} />
-                  </motion.div>
-                )
-              )}
+            <Stack>
+              <SimpleGrid minChildWidth='350px' gap={6}>
+                {data?.plants.plants.map((plant, index) =>
+                  !plant ? null : (
+                    <motion.div
+                      key={index}
+                      variants={item}
+                      whileHover={{
+                        scale: 1.1,
+                        borderRadius: '100%',
+                      }}
+                    >
+                      <PlantCard plantData={plant} />
+                    </motion.div>
+                  )
+                )}
+              </SimpleGrid>
               {data && data.plants.hasMore ? (
-                <Button
-                  onClick={() => {
-                    fetchMore({
-                      variables: {
-                        limit: variables?.limit,
-                        cursor:
-                          data.plants.plants[data.plants.plants.length - 1]
-                            .createdAt,
-                      },
-                    });
-                  }}
-                  isLoading={loading}
-                  m='auto'
-                  my={8}
-                >
-                  load more
-                </Button>
+                <Box d='flex' justifyContent='center'>
+                  <Button
+                    onClick={async () => {
+                      await fetchMore({
+                        variables: {
+                          limit: variables?.limit,
+                          cursor:
+                            data.plants.plants[data.plants.plants.length - 1]
+                              .createdAt,
+                        },
+                      });
+                    }}
+                    isLoading={loading}
+                    size='lg'
+                    colorScheme='teal'
+                    my={8}
+                  >
+                    Load more Plants
+                  </Button>
+                </Box>
               ) : null}
-            </SimpleGrid>
+            </Stack>
           </motion.div>
         </Stack>
       </Container>
