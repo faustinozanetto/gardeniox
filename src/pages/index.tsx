@@ -10,7 +10,7 @@ const Home = () => {
     <AppLayout>
       <SEO
         title='Gardeniox'
-        description='Plants & Garden Manager'
+        description='Gardeniox is the perfect solution for your outdoor & indoor garden.'
         keywords='plants, plots, garden'
       />
       <HeroSection />

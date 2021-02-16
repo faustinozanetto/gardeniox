@@ -17,7 +17,9 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang='en'>
-        <Head />
+        <Head>
+          <title>Gardeniox | Garden Manager</title>
+        </Head>
         <body>
           <ColorModeScript />
           <Main />

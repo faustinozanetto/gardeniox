@@ -5,7 +5,6 @@ import {
   Stack,
   Box,
   Heading,
-  Image,
   Text,
   VStack,
   StackDivider,
@@ -43,13 +42,11 @@ export const PlantDetails: React.FC<PlantDetailsProps> = ({ plantData }) => {
         py={{ base: 10, md: 16 }}
       >
         <Box>
-          <Image
-            as={NextImage}
-            borderRadius='full'
+          <NextImage
             objectFit='cover'
-            width={{ base: '200px', md: '250px', xl: '350px' }}
-            height={{ base: 'px', md: '250px', xl: '350px' }}
-            src={plantData?.plant.image}
+            width={300}
+            height={300}
+            src={plantData?.plant?.image!}
             alt={plantData?.plant.name}
           />
         </Box>

@@ -82,7 +82,10 @@ export const Footer = (props: BoxProps) => {
           pt={8}
         >
           <Text>
-            Made with ❤️ on 🇦🇷 by <Link href=''>Faustino Zanetto</Link>
+            Made with ❤️ on 🇦🇷 by{' '}
+            <Link to='https://github.com/faustinozanetto'>
+              Faustino Zanetto
+            </Link>
           </Text>
         </Stack>
       </Container>
