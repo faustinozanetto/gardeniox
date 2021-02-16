@@ -11,8 +11,8 @@ import {
   StackDivider,
   SimpleGrid,
   Skeleton,
-  SkeletonCircle,
 } from '@chakra-ui/react';
+import NextImage from 'next/image';
 import { PlantDisease } from './PlantDisease';
 import { PlantQuery, usePlantDiseasesQuery } from '../../generated/graphql';
 import { PlantRequirement } from './details/PlantRequirement';
@@ -23,7 +23,7 @@ interface PlantDetailsProps {
 }
 
 export const PlantDetails: React.FC<PlantDetailsProps> = ({ plantData }) => {
-  const { data: diseasesData, error, loading } = usePlantDiseasesQuery({
+  const { data: diseasesData, loading } = usePlantDiseasesQuery({
     variables: {
       id: plantData?.plant.id!,
     },
@@ -44,9 +44,13 @@ export const PlantDetails: React.FC<PlantDetailsProps> = ({ plantData }) => {
       >
         <Box>
           <Image
+            as={NextImage}
             borderRadius='full'
-            boxSize={{ base: '175px', md: '250px', xl: '350px' }}
+            objectFit='cover'
+            width={{ base: '200px', md: '250px', xl: '350px' }}
+            height={{ base: 'px', md: '250px', xl: '350px' }}
             src={plantData?.plant.image}
+            alt={plantData?.plant.name}
           />
         </Box>
         <Box>

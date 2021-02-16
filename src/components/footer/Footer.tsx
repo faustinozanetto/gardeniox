@@ -32,7 +32,7 @@ export const Footer = (props: BoxProps) => {
     <Box
       bg={useColorModeValue('gray.100', 'gray.900')}
       color={useColorModeValue('gray.600', 'gray.500')}
-      py={{ base: 4, sm: 8 }}
+      // py={{ base: 4, sm: 8 }}
       {...props}
     >
       <Container maxW={'7xl'}>

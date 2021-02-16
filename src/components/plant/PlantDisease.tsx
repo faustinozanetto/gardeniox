@@ -5,18 +5,15 @@ import {
   Text,
   Tooltip,
   useColorModeValue,
-  useDisclosure,
 } from '@chakra-ui/react';
 import { Disease } from '../../generated/graphql';
-import { PlantDiseaseModal } from './PlantDiseaseModal';
 import { useRouter } from 'next/router';
 
-type PlantDiseaseProps = {
+interface PlantDiseaseProps {
   diseaseData?: Disease;
-};
+}
 
-export const PlantDisease: React.FC<PlantDiseaseProps> = ({ diseaseData }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+export const PlantDisease = ({ diseaseData }: PlantDiseaseProps) => {
   const router = useRouter();
   return (
     <>
