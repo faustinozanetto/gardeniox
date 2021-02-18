@@ -8,196 +8,143 @@ import {
   Collapse,
   Icon,
   Link,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
-  BoxProps,
+  Container,
+  HStack,
+  Divider,
 } from '@chakra-ui/react';
-import {
-  HamburgerIcon,
-  CloseIcon,
-  ChevronDownIcon,
-  ChevronRightIcon,
-} from '@chakra-ui/icons';
+import { HamburgerIcon, CloseIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { ThemeToggler } from './ThemeToggler';
 import { MeQuery, useMeQuery } from '../../generated/graphql';
 import { NavbarUserDetails } from './NavbarUserDetails';
-import { DesktopNavbarUserButtons } from './DesktopNavbarUserButtons';
 import { MobileNavbarUserButtons } from './MobileNavbarUserButtons';
-import { UserDetails } from './UserDetails';
+import { UserDetailsMenu } from './UserDetailsMenu';
 import { isServer } from '../../utils';
+import { DesktopLink } from './desktop/DesktopLink';
+import { RegisterButton, LoginButton } from './buttons';
 
-export const Navbar = (props: BoxProps) => {
+export const Navbar = () => {
   const { isOpen, onToggle } = useDisclosure();
   const { data: userData } = useMeQuery({
     skip: isServer(),
   });
 
   return (
-    <Box {...props}>
+    <Box>
       <Flex
         as='header'
         bg={useColorModeValue('white', 'gray.800')}
         color={useColorModeValue('gray.600', 'white')}
-        minH={'80px'}
-        w={'full'}
+        height='80px'
+        w='full'
+        top='0'
         px={{ base: 4 }}
         boxShadow={'sm'}
-        pos={{ base: 'inherit', md: 'fixed', lg: 'fixed' }}
-        top='0'
+        position={isOpen ? 'inherit' : 'fixed'}
         borderBottom={1}
         borderStyle={'solid'}
-        justifyContent='center'
-        alignContent='center'
         borderColor={useColorModeValue('gray.200', 'gray.900')}
-        align={'center'}
         zIndex='999'
+        align={'center'}
         css={{
           backdropFilter: 'saturate(180%) blur(5px)',
           backgroundColor: useColorModeValue(
-            'rgba(255, 255, 255, 0.8)',
-            'rgba(26, 32, 44, 0.8)'
+            'rgba(255, 255, 255, 0.75)',
+            'rgba(26, 32, 44, 0.75)'
           ),
         }}
       >
-        <Flex ml={{ base: -2 }} display={{ base: 'flex', md: 'none' }}>
-          <IconButton
-            onClick={onToggle}
-            icon={
-              isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
-            }
-            variant={'ghost'}
-            aria-label={'Toggle Navigation'}
-          />
-        </Flex>
-        <Flex flex={1} justify={{ base: 'center', md: 'start' }}>
-          <Text
-            as={'a'}
-            textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
-            fontFamily={'heading'}
-            color={useColorModeValue('gray.800', 'white')}
-            fontSize='3xl'
-            fontWeight='bold'
-            href='/'
-            bgClip='text'
-            bgGradient='linear(to-l, #7928CA, #FF0080)'
+        <Container as={Flex} maxW={'7xl'} align={'center'}>
+          {/* Mobile navigation button toggle */}
+          <Flex
+            flex={{ base: 1, md: 'auto' }}
+            ml={{ base: -2 }}
+            display={{ base: 'flex', md: 'none' }}
           >
-            Gardeniox
-          </Text>
-
-          <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
-            <DesktopNav />
+            <IconButton
+              onClick={onToggle}
+              icon={
+                isOpen ? (
+                  <CloseIcon w={3} h={3} />
+                ) : (
+                  <HamburgerIcon w={5} h={5} />
+                )
+              }
+              variant={'ghost'}
+              aria-label={'Toggle Navigation'}
+            />
           </Flex>
-        </Flex>
 
-        <Stack direction={'row'} spacing={6}>
-          <Box display={{ base: 'none', md: 'flex' }}>
-            {userData?.me ? (
-              <UserDetails userData={userData} />
-            ) : (
-              <DesktopNavbarUserButtons />
-            )}
-          </Box>
-          <Box>
-            <ThemeToggler />
-          </Box>
-        </Stack>
+          {/* Left content */}
+          <Flex
+            flex={{ base: 1 }}
+            alignContent='center'
+            justifyContent='center'
+            justify={{ base: 'center', md: 'start' }}
+          >
+            <Text
+              as={'a'}
+              mb={{ base: '2' }}
+              textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
+              color={useColorModeValue('gray.800', 'white')}
+              fontSize='4xl'
+              fontWeight='bold'
+              href='/'
+              bgClip='text'
+              bgGradient='linear(to-l, #7928CA, #FF0080)'
+            >
+              Gardeniox
+            </Text>
+
+            {/* Desktop navigation */}
+            <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
+              <HStack
+                direction='row'
+                spacing={4}
+                alignContent='center'
+                justifyContent='center'
+              >
+                {NAV_ITEMS.map((navItem) => (
+                  <DesktopLink item={navItem} />
+                ))}
+              </HStack>
+            </Flex>
+          </Flex>
+
+          {/* Right side user register & login plus theme toggler, only when user is not signed in */}
+          <Stack
+            direction={'row'}
+            justify={'flex-end'}
+            flex={{ md: 1 }}
+            display={{ base: 'none', md: 'flex' }}
+          >
+            <Box>
+              {userData?.me ? (
+                <UserDetailsMenu userData={userData} />
+              ) : (
+                <Stack
+                  justifyContent='center'
+                  alignContent='center'
+                  direction={'row'}
+                  spacing={4}
+                >
+                  <RegisterButton />
+                  <LoginButton />
+                  <ThemeToggler />
+                </Stack>
+              )}
+            </Box>
+          </Stack>
+        </Container>
       </Flex>
 
+      {/* Hamburger menu only in mobile */}
       <Collapse in={isOpen} animateOpacity>
         <MobileNav user={userData} />
       </Collapse>
     </Box>
-  );
-};
-
-const DesktopNav = () => {
-  return (
-    <Stack
-      direction={'row'}
-      spacing={4}
-      alignItems='center'
-      justifyContent='center'
-    >
-      {NAV_ITEMS.map((navItem) => (
-        <Box key={navItem.label}>
-          <Popover trigger={'hover'} placement={'bottom-start'}>
-            <PopoverTrigger>
-              <Link
-                p={2}
-                href={navItem.href ?? '#'}
-                fontSize={'md'}
-                fontWeight={500}
-                color={useColorModeValue('gray.600', 'gray.200')}
-                _hover={{
-                  textDecoration: 'none',
-                  color: useColorModeValue('gray.800', 'white'),
-                }}
-              >
-                {navItem.label}
-              </Link>
-            </PopoverTrigger>
-
-            {navItem.children && (
-              <PopoverContent
-                border={0}
-                boxShadow={'xl'}
-                bg={useColorModeValue('white', 'gray.800')}
-                p={4}
-                rounded={'xl'}
-                minW={'sm'}
-              >
-                <Stack>
-                  {navItem.children.map((child) => (
-                    <DesktopSubNav key={child.label} {...child} />
-                  ))}
-                </Stack>
-              </PopoverContent>
-            )}
-          </Popover>
-        </Box>
-      ))}
-    </Stack>
-  );
-};
-
-const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
-  return (
-    <Link
-      href={href}
-      role={'group'}
-      display={'block'}
-      p={2}
-      rounded={'md'}
-      _hover={{ bg: useColorModeValue('pink.50', 'gray.900') }}
-    >
-      <Stack direction={'row'} align={'center'}>
-        <Box>
-          <Text
-            transition={'all .3s ease'}
-            _groupHover={{ color: 'pink.400' }}
-            fontWeight={500}
-          >
-            {label}
-          </Text>
-          <Text fontSize={'sm'}>{subLabel}</Text>
-        </Box>
-        <Flex
-          transition={'all .3s ease'}
-          transform={'translateX(-10px)'}
-          opacity={0}
-          _groupHover={{ opacity: '100%', transform: 'translateX(0)' }}
-          justify={'flex-end'}
-          align={'center'}
-          flex={1}
-        >
-          <Icon color={'pink.400'} w={5} h={5} as={ChevronRightIcon} />
-        </Flex>
-      </Stack>
-    </Link>
   );
 };
 
@@ -215,6 +162,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
       {NAV_ITEMS.map((navItem) => (
         <MobileNavItem key={navItem.label} {...navItem} />
       ))}
+      <Divider orientation='horizontal' />
       {user?.me ? (
         <NavbarUserDetails user={user} />
       ) : (
@@ -277,7 +225,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
   );
 };
 
-interface NavItem {
+export interface NavItem {
   label: string;
   subLabel?: string;
   children?: Array<NavItem>;
@@ -291,7 +239,7 @@ const NAV_ITEMS: Array<NavItem> = [
       {
         label: 'Explore the Gardeniox Dashboard',
         subLabel: 'Trending Design to inspire you',
-        href: '/dashboard',
+        href: '/',
       },
     ],
   },

@@ -25,6 +25,7 @@ export const SEO = ({ title, description, keywords, ogUrl }: SEOProps) => {
       <meta property='og:title' content={title} />
       <meta property='og:description' content={description} />
       <meta property='og:site_name' content='Gardeniox' />
+      <meta property='og:image' content='' />
       <meta property='og:url' content={`${ogUrl}${router.asPath}`} />
       <meta property='og:type' content={'website'} />
       <link rel='manifest' href='/manifest.json' />

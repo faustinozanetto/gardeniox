@@ -9,14 +9,14 @@ import {
 } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
-import { useLoginUserMutation } from '../../generated/graphql';
+import { MeDocument, MeQuery, useLoginMutation } from '../../generated/graphql';
 import { toErrorMap } from '../../utils';
 import { FormField } from './FormField';
 
 interface LoginFormProps {}
 
 export const LoginForm: React.FC<LoginFormProps> = ({}) => {
-  const [loginUser] = useLoginUserMutation();
+  const [login] = useLoginMutation();
   const router = useRouter();
   const toast = useToast();
   return (
@@ -24,9 +24,20 @@ export const LoginForm: React.FC<LoginFormProps> = ({}) => {
       <Formik
         initialValues={{ username: '', password: '' }}
         onSubmit={async (values, { setErrors }) => {
-          const response = await loginUser({ variables: values });
+          const response = await login({
+            variables: values,
+            update: (cache, { data }) => {
+              cache.writeQuery<MeQuery>({
+                query: MeDocument,
+                data: {
+                  __typename: 'Query',
+                  me: data?.login.user,
+                },
+              });
+              cache.evict({ fieldName: 'plants:{}' });
+            },
+          });
           const errors = response.data?.login.errors;
-          const user = response.data?.login.user;
           if (errors) {
             setErrors(toErrorMap(errors));
             toast({
@@ -35,10 +46,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({}) => {
               duration: 9000,
               isClosable: true,
             });
-          } else if (user) {
+          } else if (response.data?.login.user) {
             if (typeof router.query.next === 'string') {
               router.push(router.query.next);
             } else {
+              // worked
               router.push('/');
             }
           }

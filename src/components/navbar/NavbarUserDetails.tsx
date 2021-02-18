@@ -1,7 +1,7 @@
 import React from 'react';
-import { Box, Text, Heading, Stack, VStack } from '@chakra-ui/react';
+import { Box, Text, Heading, Stack } from '@chakra-ui/react';
 import { MeQuery } from '../../generated/graphql';
-import { LogoutButton } from './LogoutButton';
+import { LogoutButton } from './buttons';
 
 type NavbarUserDetailsProps = {
   user: MeQuery;

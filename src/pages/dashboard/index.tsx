@@ -13,6 +13,7 @@ import { AppLayout } from '../../layout/AppLayout';
 import { withApollo } from '../../utils/apollo/withApollo';
 import { usePlantsQuery } from '../../generated/graphql';
 import { motion } from 'framer-motion';
+import { Dashboard } from '../../components/dashboard/Dashboard';
 
 interface indexProps {}
 
@@ -45,8 +46,8 @@ const DashboardPage: React.FC<indexProps> = ({}) => {
   };
 
   return (
-    <AppLayout>
-      <Container maxW={'8xl'}>
+    <>
+      {/* <Container maxW={'8xl'}>
         <Stack>
           <Heading
             mb={4}
@@ -60,7 +61,10 @@ const DashboardPage: React.FC<indexProps> = ({}) => {
           </Heading>
           <motion.div variants={grid} initial='hidden' animate='visible'>
             <Stack>
-              <SimpleGrid minChildWidth='350px' gap={6}>
+              <SimpleGrid
+                minChildWidth={{ base: '250px', md: '350px' }}
+                gap={6}
+              >
                 {data?.plants.plants.map((plant, index) =>
                   !plant ? null : (
                     <motion.div
@@ -101,8 +105,9 @@ const DashboardPage: React.FC<indexProps> = ({}) => {
             </Stack>
           </motion.div>
         </Stack>
-      </Container>
-    </AppLayout>
+      </Container> */}
+      <Dashboard />
+    </>
   );
 };
 

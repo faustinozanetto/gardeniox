@@ -1,23 +1,19 @@
 import React from 'react';
-import {
-  Box,
-  Button,
-  Heading,
-  Spacer,
-  Stack,
-  useColorModeValue,
-  useToast,
-} from '@chakra-ui/react';
+import { Box, Button, Heading, Stack, useToast } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
-import { useRegisterUserMutation } from '../../generated/graphql';
+import {
+  MeDocument,
+  MeQuery,
+  useRegisterMutation,
+} from '../../generated/graphql';
 import { toErrorMap } from '../../utils';
 import { FormField } from './FormField';
 
 interface LoginFormProps {}
 
 export const RegisterForm: React.FC<LoginFormProps> = ({}) => {
-  const [registerUser] = useRegisterUserMutation();
+  const [register] = useRegisterMutation();
   const router = useRouter();
   const toast = useToast();
   return (
@@ -25,10 +21,18 @@ export const RegisterForm: React.FC<LoginFormProps> = ({}) => {
       <Formik
         initialValues={{ email: '', username: '', password: '' }}
         onSubmit={async (values, { setErrors }) => {
-          const response = await registerUser({
+          const response = await register({
             variables: { options: values },
+            update: (cache, { data }) => {
+              cache.writeQuery<MeQuery>({
+                query: MeDocument,
+                data: {
+                  __typename: 'Query',
+                  me: data?.register.user,
+                },
+              });
+            },
           });
-          console.log(response);
           const errors = response.data?.register.errors;
           const user = response.data?.register.user;
           if (errors) {
@@ -40,11 +44,8 @@ export const RegisterForm: React.FC<LoginFormProps> = ({}) => {
               isClosable: true,
             });
           } else if (user) {
-            if (typeof router.query.next === 'string') {
-              router.push(router.query.next);
-            } else {
-              router.push('/');
-            }
+            // worked
+            router.push('/');
           }
         }}
       >

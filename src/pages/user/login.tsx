@@ -10,9 +10,7 @@ import {
   VisuallyHidden,
   VStack,
 } from '@chakra-ui/react';
-import { withUrqlClient } from 'next-urql';
 import { FaFacebook, FaGoogle, FaGithub } from 'react-icons/fa';
-import { createUrqlClient } from '../../utils';
 import { AppLayout } from '../../layout/AppLayout';
 import { LoginForm } from '../../components/forms/LoginForm';
 import { TextDivider } from '../../components/common/TextDivider';
@@ -26,6 +24,7 @@ const LoginPage: React.FC<LoginProps> = ({}) => {
       <Box
         bg={useColorModeValue('gray.50', 'inherit')}
         px={{ sm: '6', lg: '8' }}
+        pt={{ base: '14' }}
       >
         <Box d='flex' flexDir='column' alignContent='center'>
           <VStack>

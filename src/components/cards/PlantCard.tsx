@@ -53,6 +53,7 @@ export const PlantCard: React.FC<PlantCardProps> = ({ plantData }) => {
             width={282}
             objectFit={'cover'}
             src={plantData?.image}
+            alt={plantData?.name}
           />
         </Box>
         <Stack pt={10} align={'center'}>

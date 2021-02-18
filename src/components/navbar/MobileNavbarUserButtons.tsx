@@ -1,7 +1,6 @@
 import React from 'react';
-import { VStack, Flex } from '@chakra-ui/react';
-import { RegisterButton } from './RegisterButton';
-import { SignInButton } from './SignInButton';
+import { VStack } from '@chakra-ui/react';
+import { RegisterButton, LoginButton } from './buttons';
 
 interface MobileNavbarUserButtons {}
 
@@ -16,7 +15,7 @@ export const MobileNavbarUserButtons: React.FC<MobileNavbarUserButtons> = ({}) =
       {/* @ts-ignore */}
       <RegisterButton w='100%' />
       {/* @ts-ignore */}
-      <SignInButton w='100%' />
+      <LoginButton w='100%' />
     </VStack>
   );
 };

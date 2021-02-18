@@ -1,18 +1,16 @@
 import React from 'react';
-import { Box, Button, ButtonProps, useColorModeValue } from '@chakra-ui/react';
-import { useUserLogoutMutation } from '../../generated/graphql';
+import { Box, Button, ButtonProps } from '@chakra-ui/react';
 import { FiLogOut } from 'react-icons/fi';
-import { useRouter } from 'next/router';
 import { useApolloClient } from '@apollo/client';
+import { useLogoutMutation } from '../../../generated/graphql';
 
 interface LogoutButtonProps {}
 
 export const LogoutButton: React.FC<LogoutButtonProps> = (
   props: ButtonProps
 ) => {
-  const [logout, { loading }] = useUserLogoutMutation();
+  const [logout, { loading }] = useLogoutMutation();
   const apolloClient = useApolloClient();
-  const router = useRouter();
   return (
     <Box>
       <Button
@@ -22,6 +20,7 @@ export const LogoutButton: React.FC<LogoutButtonProps> = (
         fontWeight={600}
         color={'white'}
         variant='ghost'
+        isLoading={loading}
         leftIcon={<FiLogOut />}
         onClick={async () => {
           await logout();
