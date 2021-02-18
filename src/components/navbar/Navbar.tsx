@@ -18,8 +18,8 @@ import {
 import { HamburgerIcon, CloseIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { ThemeToggler } from './ThemeToggler';
 import { MeQuery, useMeQuery } from '../../generated/graphql';
-import { NavbarUserDetails } from './NavbarUserDetails';
-import { MobileNavbarUserButtons } from './MobileNavbarUserButtons';
+import { MobileUserDetails } from './mobile/user/MobileUserDetails';
+import { MobileNavbarUserButtons } from './mobile/MobileNavbarUserButtons';
 import { UserDetailsMenu } from './UserDetailsMenu';
 import { isServer } from '../../utils';
 import { DesktopLink } from './desktop/DesktopLink';
@@ -59,7 +59,7 @@ export const Navbar = () => {
         <Container as={Flex} maxW={'7xl'} align={'center'}>
           {/* Mobile navigation button toggle */}
           <Flex
-            flex={{ base: 1, md: 'auto' }}
+            flex={{ base: 0, md: 'auto' }}
             ml={{ base: -2 }}
             display={{ base: 'flex', md: 'none' }}
           >
@@ -164,7 +164,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
       ))}
       <Divider orientation='horizontal' />
       {user?.me ? (
-        <NavbarUserDetails user={user} />
+        <MobileUserDetails user={user} />
       ) : (
         <MobileNavbarUserButtons />
       )}

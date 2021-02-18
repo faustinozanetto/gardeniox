@@ -1,6 +1,6 @@
 import React from 'react';
 import { VStack } from '@chakra-ui/react';
-import { RegisterButton, LoginButton } from './buttons';
+import { RegisterButton, LoginButton } from '../buttons';
 
 interface MobileNavbarUserButtons {}
 
